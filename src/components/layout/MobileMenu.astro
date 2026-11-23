@@ -1,0 +1,49 @@
+---
+import { whatsappUrl } from '../../lib/whatsapp';
+
+interface Props {
+  /** Ruta de la página actual, para marcarla en la lista */
+  current: string;
+}
+
+const { current } = Astro.props;
+const linkClass = (href: string) => ['block border-l-2 py-3 pl-3', current === href ? 'border-amber text-amber' : 'border-transparent'];
+const ariaCurrent = (href: string) => (current === href ? 'page' : undefined);
+---
+
+{/* Si la lista no cabe en pantalla (teléfono en horizontal), se desplaza dentro del menú */}
+<nav
+  id="mobile-menu"
+  class="hidden max-h-[calc(100svh-5rem)] overflow-y-auto bg-navy px-5 pb-6 text-white lg:hidden"
+  aria-label="Principal móvil"
+>
+  <ul class="flex flex-col divide-y divide-white/10 text-base">
+    <li><a href="/" class:list={linkClass('/')} aria-current={ariaCurrent('/')}>Inicio</a></li>
+    <li><a href="/servicios" class:list={linkClass('/servicios')} aria-current={ariaCurrent('/servicios')}>Servicios</a></li>
+    <li><a href="/productos" class:list={linkClass('/productos')} aria-current={ariaCurrent('/productos')}>Productos</a></li>
+    <li><a href="/nosotros" class:list={linkClass('/nosotros')} aria-current={ariaCurrent('/nosotros')}>Nosotros</a></li>
+    <li><a href="/preguntas-frecuentes" class:list={linkClass('/preguntas-frecuentes')} aria-current={ariaCurrent('/preguntas-frecuentes')}>Preguntas frecuentes</a></li>
+  </ul>
+  <a
+    href={whatsappUrl('Hola ToolPool, me gustaría cotizar un servicio para mi alberca.')}
+    target="_blank"
+    rel="noopener"
+    class="mt-4 block bg-amber px-4 py-3 text-center text-sm font-medium text-navy"
+  >
+    Cotiza por WhatsApp
+  </a>
+</nav>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    // Con el menú abierto el header se pone sólido aunque esté sobre el hero
+    header?.toggleAttribute('data-menu-open', open);
+  });
+</script>

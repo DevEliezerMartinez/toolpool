@@ -1,0 +1,121 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { Image } from 'astro:assets';
+import empaques from '../../assets/img/empaques.webp';
+import timer from '../../assets/img/timer.webp';
+import sellador from '../../assets/img/sellador.webp';
+import kit from '../../assets/img/kit.webp';
+import Button from '../ui/Button.astro';
+import { whatsappUrl, MERCADO_LIBRE_URL } from '../../lib/whatsapp';
+
+interface Props {
+  /** true en /productos: sin encabezado (lo pone el PageHero) y con el aviso de Mercado Libre */
+  page?: boolean;
+}
+
+const { page = false } = Astro.props;
+---
+
+<section id="productos" class="bg-white py-14 sm:py-20">
+  <Container>
+    {
+      !page && (
+        <>
+          <SectionHeading eyebrow="Productos" line class="max-w-md">
+            Productos para tu alberca, recomendados por expertos
+          </SectionHeading>
+          <p class="mt-4 max-w-xl text-navy/80" data-animate="fade-up">
+            Seleccionamos productos que conocemos y recomendamos. Cómpralos de forma segura en Mercado Libre.
+          </p>
+        </>
+      )
+    }
+
+    {/* Se muestran los 4 productos más representativos; el catálogo completo (53) está en Mercado Libre */}
+    {/*
+      Descripciones: una línea de para qué sirve, resumida de la ficha de Mercado Libre.
+      Sin precios ni existencias (cambian allá y aquí quedarían desactualizados).
+      TODO: enlace directo a la publicación de cada producto (hoy todos llevan a la tienda).
+      TODO: confirmar con qué equipos es compatible el kit de empaques GO-KIT32-9.
+    */}
+    <ul class="mt-10 grid gap-x-16 gap-y-8 lg:grid-cols-2" data-animate="stagger">
+      <li class="flex gap-5">
+        <Image src={empaques} alt="Kit de empaques para filtro de alberca" width={256} height={256} fit="cover" class="h-32 w-32 shrink-0 rounded-md object-cover" />
+        <div class="flex-1">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-xl font-medium">Kit De Empaques</h3>
+            <a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-accent text-white transition hover:brightness-95" aria-label="Ver Kit De Empaques en Mercado Libre"><Icon aria-hidden="true" name="lucide:arrow-up-right" class="size-5" /></a>
+          </div>
+          <p class="mt-3 max-w-xs text-sm text-navy/80">Juego de empaques de repuesto Super Pro (Aladdin), modelo GO-KIT32-9.</p>
+        </div>
+      </li>
+
+      <li class="flex gap-5">
+        <Image src={timer} alt="Timer mecánico para alberca" width={256} height={256} fit="cover" class="h-32 w-32 shrink-0 rounded-md object-cover" />
+        <div class="flex-1">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-xl font-medium">Timer Mecánico</h3>
+            <a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-accent text-white transition hover:brightness-95" aria-label="Ver Timer Mecánico en Mercado Libre"><Icon aria-hidden="true" name="lucide:arrow-up-right" class="size-5" /></a>
+          </div>
+          <p class="mt-3 max-w-xs text-sm text-navy/80">Programa el encendido y apagado de los equipos de tu alberca. Marca Panda, voltaje dual 110 V / 220 V.</p>
+        </div>
+      </li>
+
+      <li class="flex gap-5">
+        <Image src={sellador} alt="Sellador Pool Putty" width={256} height={256} fit="cover" class="h-32 w-32 shrink-0 rounded-md object-cover" />
+        <div class="flex-1">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-xl font-medium">Sellador Pool Putty</h3>
+            <a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-accent text-white transition hover:brightness-95" aria-label="Ver Sellador Pool Putty en Mercado Libre"><Icon aria-hidden="true" name="lucide:arrow-up-right" class="size-5" /></a>
+          </div>
+          <p class="mt-3 max-w-xs text-sm text-navy/80">Masilla epóxica de dos componentes para reparar grietas y fisuras. Atlas Epoxybond.</p>
+        </div>
+      </li>
+
+      <li class="flex gap-5">
+        <Image src={kit} alt="Kit analizador de cloro y pH" width={256} height={256} fit="cover" class="h-32 w-32 shrink-0 rounded-md object-cover" />
+        <div class="flex-1">
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="text-xl font-medium">Kit Analizador de Cloro y PH</h3>
+            <a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-accent text-white transition hover:brightness-95" aria-label="Ver Kit Analizador de Cloro y PH en Mercado Libre"><Icon aria-hidden="true" name="lucide:arrow-up-right" class="size-5" /></a>
+          </div>
+          <p class="mt-3 max-w-xs text-sm text-navy/80">Mide el cloro y el pH del agua con reactivos líquidos y una escala de color. Incluye estuche.</p>
+        </div>
+      </li>
+    </ul>
+
+    <p class="mt-12 text-center text-navy/80" data-animate="fade-up">
+      ¿No sabes cuál necesitas? Pregúntanos por WhatsApp y te recomendamos el adecuado.
+    </p>
+    <div class="mt-5 flex flex-wrap justify-center gap-4">
+      <Button href={MERCADO_LIBRE_URL}>Ver en Mercado Libre</Button>
+      <Button href={whatsappUrl('Hola, quiero asesoría sobre un producto para mi alberca.')} variant="outline-accent">
+        Pregúntanos por WhatsApp
+      </Button>
+    </div>
+    <p class="mt-4 text-center text-sm">
+      <a
+        href={page ? '/?tipo=Producto#formulario' : '#formulario'}
+        data-form-tipo="Producto"
+        class="text-navy/70 underline hover:text-navy">o déjanos tus datos y te contactamos</a
+      >
+    </p>
+
+    {
+      page ? (
+        <p class="mt-8 text-center text-sm text-navy/60">
+          La compra se hace en Mercado Libre: al dar clic en un producto saldrás de este sitio. Consulta ahí el
+          precio y la disponibilidad.
+        </p>
+      ) : (
+        <p class="mt-8 text-center">
+          <a href="/productos" class="font-semibold text-brand-dark hover:underline">
+            Ver todos los productos <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" />
+          </a>
+        </p>
+      )
+    }
+  </Container>
+</section>

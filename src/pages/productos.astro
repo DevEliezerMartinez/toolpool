@@ -1,0 +1,31 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import Products from '../components/home/Products.astro';
+---
+
+<PageLayout
+  title="Productos | ToolPool"
+  description="Productos para tu alberca recomendados por expertos. Cómpralos de forma segura en Mercado Libre."
+>
+  <PageHero eyebrow="Productos" title="Productos para tu alberca, recomendados por expertos">
+    <p>Seleccionamos productos que conocemos y recomendamos. Cómpralos de forma segura en Mercado Libre.</p>
+  </PageHero>
+
+  {/* Sin precios ni existencias: cambian en Mercado Libre y aquí quedarían desactualizados */}
+  <Products page />
+
+  {/* Puente a Servicios */}
+  <section class="bg-sky-soft py-14 sm:py-16">
+    <Container class="max-w-3xl text-center" data-animate="fade-up">
+      <h2 class="text-2xl font-semibold text-brand sm:text-3xl">¿Prefieres que nosotros nos encarguemos?</h2>
+      <p class="mt-4 text-navy/80">
+        De la primera excavación al mantenimiento de cada mes, nos encargamos de tu alberca o jacuzzi para que tú
+        solo te ocupes de disfrutarla.
+      </p>
+      <Button href="/servicios" class="mt-6">Ver servicios</Button>
+    </Container>
+  </section>
+</PageLayout>

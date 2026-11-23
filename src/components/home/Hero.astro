@@ -1,0 +1,49 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../../assets/img/hero_home.png';
+import { whatsappUrl } from '../../lib/whatsapp';
+---
+
+{/*
+  Animación: la entrada es CSS puro (.hero-in / .hero-zoom en global.css), no depende de JS.
+  --i marca el turno de cada elemento en la cascada.
+*/}
+<section class="relative flex min-h-svh items-center overflow-hidden bg-navy pt-24 pb-28 text-white">
+  {/* Es el elemento más grande de la página (LCP): carga prioritaria y nunca se anima su opacidad */}
+  <Image
+    src={heroImage}
+    alt="Alberca techada con carril de nado"
+    widths={[640, 960, 1280, 1672]}
+    sizes="100vw"
+    quality={70}
+    loading="eager"
+    fetchpriority="high"
+    class="hero-zoom absolute inset-0 h-full w-full object-cover"
+    data-animate="parallax"
+  />
+  <div class="absolute inset-0 bg-navy/40" aria-hidden="true"></div>
+
+  <Container class="relative">
+    <p class="hero-in flex items-center gap-6 text-sm font-display tracking-[0.2em] uppercase sm:text-base" style="--i: 0">
+      <span class="hidden h-px w-16 bg-white sm:block" aria-hidden="true"></span>
+      Construimos · Cuidamos · Renovamos
+    </p>
+    {/* Headline en 3 líneas: las dos primeras en regular y la tercera en itálica (en blanco) */}
+    <h1 class="mt-6 text-4xl leading-tight sm:text-6xl">
+      <span class="hero-in block" style="--i: 1">Tu alberca</span>
+      <span class="hero-in block" style="--i: 2">en las mejores</span>
+      <span class="hero-in block font-display text-5xl italic sm:text-7xl" style="--i: 3">manos</span>
+    </h1>
+    <p class="hero-in mt-5 max-w-xl text-base sm:text-lg" style="--i: 4">
+      Construimos, mantenemos y rehabilitamos albercas y jacuzzis para proyectos residenciales y comerciales.
+    </p>
+    <div class="hero-in mt-10 flex flex-wrap gap-4" style="--i: 5">
+      <Button href={whatsappUrl('Hola ToolPool, me gustaría cotizar un servicio para mi alberca.')}>
+        Cotiza por WhatsApp
+      </Button>
+      <Button href="/productos" variant="outline">Ver productos</Button>
+    </div>
+  </Container>
+</section>

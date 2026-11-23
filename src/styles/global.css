@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colores aproximados del mockup: ajustar cuando haya guía de marca */
+  --color-brand: #1e90ff;
+  --color-brand-dark: #0b6fd6;
+  --color-navy: #0b1f3a;
+  --color-accent: #ff6a00;
+  --color-amber: #fbb034;
+  --color-sky-soft: #e8f1fd;
+
+  /*
+    Tipografía: el proyecto solo usa estas 2 familias (con sus pesos e itálicas).
+    - Instrument Sans: texto general. Se carga desde Google Fonts en BaseLayout.astro.
+    - Century Gothic: títulos, eyebrows y frases en itálica. Archivos en public/fonts.
+    No hay familia serif: los acentos van en Century Gothic itálica (clase font-display + italic).
+  */
+  --font-sans: 'Instrument Sans', sans-serif;
+  --font-display: 'Century Gothic', sans-serif;
+}
+
+/*
+  Century Gothic: copias woff2 de los TTF de fonts-source/Century-Gothic-Sans-Font (fuera de public para no publicarlos),
+  recortadas a los caracteres del español. Solo se descargan los pesos que la página usa.
+  Pesos disponibles aquí: 400, 600 y 700, cada uno con itálica.
+*/
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-semibolditalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Century Gothic';
+  src: url('/fonts/century-gothic-bolditalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* El header es fijo: los enlaces a secciones dejan este espacio arriba para no quedar tapados */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-white font-sans text-navy antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+}
+
+/*
+  Animaciones en CSS (sin JavaScript). Las ligadas al scroll viven en src/scripts/animations.ts.
+  Todo respeta prefers-reduced-motion.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  /* Entrada del hero: arranca en el primer pintado, sin esperar JS (protege el LCP).
+     Cada línea define su turno con style="--i: n". */
+  .hero-in {
+    animation: hero-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  /* Imagen del hero: zoom lento. Solo escala, nunca opacidad. */
+  .hero-zoom {
+    animation: hero-zoom 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Cambio de tab en proyectos */
+  [role='tabpanel']:not([hidden]) {
+    animation: fade-in 0.35s ease-out;
+  }
+
+  /* Visor de fotos de proyectos: entra con un fundido corto */
+  #lightbox[open] {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  /* Acordeón de preguntas: apertura suave donde el navegador lo soporta */
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      content-visibility 0.3s allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    scale: 1.2;
+  }
+  to {
+    scale: 1.14;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Regla graduada de la sección "Cómo trabajamos" */
+.ruler {
+  background-image:
+    repeating-linear-gradient(to right, var(--color-navy) 0 1px, transparent 1px 60px),
+    repeating-linear-gradient(to right, var(--color-navy) 0 1px, transparent 1px 12px);
+  background-size:
+    100% 100%,
+    100% 55%;
+  background-position: bottom;
+  background-repeat: no-repeat;
+}
+
+/*
+  Texto en movimiento detrás del collage de proyectos. El contenido va duplicado en el HTML y
+  se desplaza la mitad de su ancho, así el bucle no tiene salto. Solo anima transform.
+*/
+.marquee {
+  display: flex;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .marquee {
+    animation: marquee 40s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/*
+  Texto con agua: las letras dejan ver una foto de agua que se desplaza despacio.
+  La imagen llega en --water (ver waterTexture() en src/lib/gallery.ts). Ya es azul oscuro y con
+  contraste, así que se lee sobre blanco sin velo encima. Va y vuelve (alternate) para que no haya
+  salto al repetir. Sin soporte de background-clip: text, el texto queda en su color normal.
+  Por defecto está medido para los números de "Cómo trabajamos" (Process.astro).
+*/
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .water-text {
+    background: var(--water) var(--water-from, 0px) 50% / var(--water-size, 480px auto) no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .water-text {
+    animation: water 10s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes water {
+  to {
+    background-position: var(--water-to, -330px) 50%;
+  }
+}
+
+/*
+  Variante para títulos (PageHero): el texto ocupa varias líneas y todo el ancho, así que la foto
+  se agranda (mínimo 1000 px de ancho, 240 px de alto) y el recorrido va en porcentaje.
+*/
+.water-text-title {
+  --water-size: max(130%, 1000px) auto;
+  --water-from: 0%;
+  --water-to: 100%;
+}
+
+/*
+  Barra de progreso del header: muestra cuánto de la página se ha recorrido.
+  Va ligada al scroll con CSS (animation-timeline), sin JavaScript y fuera del hilo principal.
+  En navegadores que aún no lo soportan, la barra simplemente no se muestra.
+*/
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    transform: scaleX(0);
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
+}

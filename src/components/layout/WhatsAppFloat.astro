@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+import { whatsappUrl } from '../../lib/whatsapp';
+---
+
+<a
+  href={whatsappUrl('Hola, tengo una pregunta.')}
+  target="_blank"
+  rel="noopener"
+  aria-label="¿Dudas? Escríbenos por WhatsApp"
+  class="group fixed right-5 bottom-5 z-40 flex items-center gap-3"
+>
+  <span
+    class="pointer-events-none hidden rounded-full bg-white px-4 py-2 text-sm font-medium text-navy opacity-0 shadow-md transition group-hover:opacity-100 group-focus-visible:opacity-100 sm:block"
+  >
+    ¿Dudas? Escríbenos
+  </span>
+  <span class="flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-lg transition group-hover:scale-105">
+    <Icon aria-hidden="true" name="simple-icons:whatsapp" class="size-7" />
+  </span>
+</a>

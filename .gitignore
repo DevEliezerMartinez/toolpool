@@ -13,12 +13,24 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables (el ejemplo sí se versiona)
 .env
-.env.production
+.env.*
+!.env.example
+
+# carpetas locales de servicios de hospedaje
+.netlify/
+.vercel/
 
 # macOS-specific files
 .DS_Store
 
+# Windows-specific files
+Thumbs.db
+Desktop.ini
+
 # jetbrains setting folder
 .idea/
+
+# fuentes originales de Century Gothic (tipografía comercial): solo se versionan los woff2 de public/fonts
+fonts-source/

@@ -1,0 +1,159 @@
+---
+import { Icon } from 'astro-icon/components';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import ServiceBlock from '../components/ui/ServiceBlock.astro';
+import Process from '../components/home/Process.astro';
+import Segments from '../components/home/Segments.astro';
+import Projects from '../components/home/Projects.astro';
+import Faq from '../components/home/Faq.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import CtaBanner from '../components/home/CtaBanner.astro';
+import { whatsappUrl } from '../lib/whatsapp';
+import { photo } from '../lib/gallery';
+---
+
+<PageLayout
+  title="Nuestros servicios | ToolPool"
+  description="Mantenimiento, construcción, rehabilitación, equipamiento, tratamiento del agua y asesoría para albercas y jacuzzis."
+>
+  <PageHero eyebrow="Servicios" title="Todo lo que tu alberca necesita, con un solo equipo">
+    <p>
+      De la primera excavación al mantenimiento de cada mes, nos encargamos de tu alberca o jacuzzi para que tú solo
+      te ocupes de disfrutarla.
+    </p>
+  </PageHero>
+
+  {/* TODO imagen: las fotos de cada servicio son una selección provisional de la galería */}
+  {/*
+    TODO contenido por servicio (falta pedirlo a la clienta, no inventar):
+    qué incluye en concreto, para quién es (casa o negocio), su antes y después,
+    y las señales de que se necesita rehabilitación.
+  */}
+  <ServiceBlock
+    id="mantenimiento"
+    number="01"
+    title="Mantenimiento"
+    tagline="Agua cristalina, sin que tengas que pensar en ella."
+    image={photo('3.38.43 PM (4)')}
+    imageAlt="Limpieza de una alberca techada"
+  >
+    <p>
+      Limpieza, balance químico y revisión periódica de equipos. Detectamos a tiempo lo que podría convertirse en
+      una reparación costosa.
+    </p>
+    <p>
+      Señales de que tu alberca lo necesita: agua turbia o sucia, equipos con residuos y hojas acumuladas. Si
+      notas alguna, conviene revisarla antes de que el problema crezca.
+    </p>
+    <p>
+      <a href={whatsappUrl('Hola, me interesa el mantenimiento de mi alberca.')} target="_blank" rel="noopener"
+        >Agenda tu mantenimiento <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  <ServiceBlock
+    id="construccion"
+    number="02"
+    title="Construcción"
+    tagline="La alberca que imaginas, construida a detalle."
+    image={photo('3.38.46 PM (5)')}
+    imageAlt="Alberca residencial junto a un jardín"
+    reverse
+  >
+    <p>
+      Escuchamos tu idea, diseñamos la propuesta y la construimos con materiales de calidad, en casa o en
+      proyectos de mayor escala.
+    </p>
+    <p>
+      <a href={whatsappUrl('Hola, quiero cotizar la construcción de una alberca.')} target="_blank" rel="noopener"
+        >Cotiza tu proyecto <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  {/* TODO contenido: falta confirmar con la clienta qué incluye la rehabilitación (acabados, recubrimientos, iluminación, etc.) */}
+  <ServiceBlock
+    id="rehabilitacion"
+    number="03"
+    title="Rehabilitación"
+    tagline="Devuélvele la vida a tu alberca."
+    image={photo('3.38.40 PM (1)')}
+    imageAlt="Jacuzzi con muro de piedra"
+  >
+    <p>Renovamos albercas y jacuzzis deteriorados para que vuelvan a lucir y funcionar como nuevos.</p>
+    <p>
+      <a href={whatsappUrl('Hola, quiero cotizar la rehabilitación de mi alberca.')} target="_blank" rel="noopener"
+        >Cotiza tu renovación <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  <ServiceBlock
+    id="equipamiento"
+    number="04"
+    title="Equipamiento y área de máquinas"
+    tagline="El corazón de tu alberca, siempre a punto."
+    image={photo('3.38.46 PM (6)')}
+    imageAlt="Cuarto de máquinas con filtros y bombas"
+    reverse
+  >
+    <p>Instalamos y revisamos bombas, filtros y calderas para un funcionamiento eficiente y seguro.</p>
+    <p>
+      <a href={whatsappUrl('Hola, quiero una revisión de los equipos de mi alberca.')} target="_blank" rel="noopener"
+        >Agenda una revisión <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  <ServiceBlock
+    id="tratamiento-del-agua"
+    number="05"
+    title="Tratamiento del agua"
+    tagline="Agua limpia, segura y en equilibrio."
+    image={photo('3.38.39 PM')}
+    imageAlt="Alberca techada de agua cristalina"
+  >
+    <p>
+      Analizamos y equilibramos el agua para tu familia o tus huéspedes, con un uso responsable de químicos y
+      recursos.
+    </p>
+    <p>
+      <a href={whatsappUrl('Hola, tengo una duda sobre el agua de mi alberca.')} target="_blank" rel="noopener"
+        >Pregunta por tu caso <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  <ServiceBlock
+    id="asesoria"
+    number="06"
+    title="Asesoría especializada"
+    tagline="Te decimos lo que tu alberca necesita, y lo que no."
+    image={photo('3.38.46 PM (1)')}
+    imageAlt="Jacuzzi exterior en un conjunto residencial"
+    reverse
+  >
+    <p>Antes de invertir, te explicamos opciones y costos con claridad para que decidas con información.</p>
+    <p>
+      <a href={whatsappUrl('Hola, me gustaría recibir asesoría para mi alberca.')} target="_blank" rel="noopener"
+        >Pide asesoría <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </p>
+  </ServiceBlock>
+
+  <Process />
+
+  {/* Tipos de instalación y zona de servicio */}
+  <Segments>
+    <p class="mt-6 text-navy/80">Zona de servicio: Ciudad de México.</p>
+  </Segments>
+
+  <Projects />
+  <Faq featured="servicios" />
+  <ContactSection title="Déjanos tus datos y te contactamos">
+    <p>Dinos qué servicio te interesa y te respondemos por WhatsApp con los siguientes pasos.</p>
+  </ContactSection>
+  <CtaBanner />
+</PageLayout>

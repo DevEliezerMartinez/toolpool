@@ -1,0 +1,91 @@
+---
+import { Icon } from 'astro-icon/components';
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Container from '../components/ui/Container.astro';
+import { Image } from 'astro:assets';
+import { photo } from '../lib/gallery';
+import Values from '../components/home/Values.astro';
+import CtaBanner from '../components/home/CtaBanner.astro';
+---
+
+<PageLayout
+  title="Nosotros | ToolPool"
+  description="ToolPool reúne construcción, mantenimiento, equipamiento, tratamiento del agua y asesoría para albercas en un solo equipo."
+>
+  <PageHero eyebrow="Nosotros" title="Somos ToolPool">
+    <p>Tu proyecto, nuestro compromiso.</p>
+  </PageHero>
+
+  {/*
+    Cambios a validar con la clienta (versión pulida de su texto original):
+    - La historia agrega "que sus dueños solo se ocupen de disfrutarla".
+    - La visión cambia "empresa líder a nivel nacional" por "la más confiable de México".
+  */}
+  <section class="bg-white py-14 sm:py-20">
+    <Container class="grid items-center gap-10 lg:grid-cols-2">
+      {/* TODO imagen: foto provisional de la galería; aquí va el equipo real de ToolPool */}
+      <Image
+        src={photo('3.38.41 PM (2)')}
+        alt="Limpieza de una alberca techada"
+        widths={[480, 640, 960]}
+        sizes="(min-width: 1024px) 45vw, 100vw"
+        class="aspect-[4/3] w-full rounded-md object-cover"
+        data-animate="fade-up"
+      />
+      <div data-animate="fade-up">
+        <h2 class="text-2xl font-semibold text-brand sm:text-3xl">Historia</h2>
+        <div class="mt-4 space-y-4 text-navy/80">
+          <p>
+            ToolPool nació con una idea sencilla: que cada alberca funcione de forma óptima, segura y eficiente, y
+            que sus dueños solo se ocupen de disfrutarla.
+          </p>
+          <p>
+            Reunimos conocimiento técnico y experiencia para ofrecer en un solo lugar construcción, mantenimiento,
+            equipamiento, tratamiento del agua y asesoría. Trabajamos con atención personalizada y seguimiento
+            constante, porque la confianza se construye proyecto a proyecto, de albercas residenciales a
+            instalaciones de gran escala.
+          </p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="bg-sky-soft py-14 sm:py-20">
+    <Container class="grid gap-6 md:grid-cols-2" data-animate="stagger">
+      <div class="rounded-md bg-white p-8">
+        <h2 class="text-xl font-semibold text-brand">Misión</h2>
+        <p class="mt-3 text-navy/80">
+          Brindar soluciones integrales para albercas, de la construcción al mantenimiento, el equipamiento y el
+          tratamiento del agua, con calidad, seguridad y un equipo comprometido con cada cliente.
+        </p>
+      </div>
+      <div class="rounded-md bg-white p-8">
+        <h2 class="text-xl font-semibold text-brand">Visión</h2>
+        <p class="mt-3 text-navy/80">
+          Ser la empresa de albercas más confiable de México, reconocida por la excelencia de su servicio y por
+          soluciones innovadoras y sostenibles que alargan la vida de cada instalación.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <Values />
+
+  {/* TODO contenido: equipo real con fotos (nombre y rol si quieren) y cifras solo si son reales */}
+  <section class="bg-white pb-14 sm:pb-20">
+    <Container class="max-w-5xl" data-animate="fade-up">
+      <h2 class="text-2xl font-bold">Nuestros compromisos</h2>
+      <ul class="mt-6 grid gap-4 sm:grid-cols-3">
+        <li class="rounded-md bg-sky-soft p-6 font-semibold">Presupuestos claros</li>
+        <li class="rounded-md bg-sky-soft p-6 font-semibold">Seguimiento después de la entrega</li>
+        <li class="rounded-md bg-sky-soft p-6 font-semibold">Uso responsable del agua</li>
+      </ul>
+      <a href="/servicios" class="mt-8 inline-block text-sm font-semibold text-brand-dark hover:underline"
+        >Conoce nuestros servicios <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </Container>
+  </section>
+
+  <CtaBanner />
+</PageLayout>

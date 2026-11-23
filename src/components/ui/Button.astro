@@ -1,0 +1,33 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  variant?: 'primary' | 'outline' | 'outline-accent';
+}
+
+const { href, variant = 'primary', class: className, ...rest } = Astro.props;
+
+const variants = {
+  primary: 'bg-amber text-navy hover:brightness-95',
+  outline: 'border border-white text-white hover:bg-white/10',
+  'outline-accent': 'border border-accent text-accent hover:bg-accent/5',
+};
+
+// Los enlaces externos (WhatsApp, Mercado Libre) abren en pestaña nueva
+const external = href.startsWith('http');
+---
+
+<a
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener' : undefined}
+  class:list={[
+    'inline-flex items-center justify-center px-6 py-3 text-sm font-medium transition',
+    variants[variant],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</a>

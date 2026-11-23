@@ -1,0 +1,274 @@
+---
+/**
+ * Proyectos, como en el diseño: arriba el título con los tabs y un collage de 4 fotos inclinadas
+ * sobre un texto que se desplaza; abajo la galería bento del tab elegido.
+ * Se usa igual en la home y en /servicios.
+ */
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import ProjectGallery from './ProjectGallery.astro';
+import { photo } from '../../lib/gallery';
+import { whatsappUrl } from '../../lib/whatsapp';
+
+// Las 6 fotos del tab de Mantenimiento son las que muestra el mockup
+const mantenimiento = [
+  { src: photo('3.38.38 PM (5)'), alt: 'Jacuzzi exterior con deck gris' },
+  { src: photo('3.38.44 PM (1)'), alt: 'Alberca en el jardín de una casa' },
+  { src: photo('3.38.43 PM (3)'), alt: 'Alberca al pie de un edificio' },
+  { src: photo('3.38.44 PM (2)'), alt: 'Alberca techada con ventanales' },
+  { src: photo('3.38.40 PM (1)'), alt: 'Jacuzzi con muro de piedra' },
+  { src: photo('3.38.42 PM (4)'), alt: 'Alberca iluminada de noche' },
+];
+
+// TODO imagen: las fotos de Construcción y Rehabilitación son una selección PROVISIONAL de la
+// galería. No se sabe qué proyectos construyó o rehabilitó ToolPool: hay que confirmarlo con la
+// clienta antes de publicar, porque el sitio los presenta como trabajos de ese servicio.
+const construccion = [
+  { src: photo('3.38.46 PM (5)'), alt: 'Alberca residencial junto a un jardín' },
+  { src: photo('3.38.41 PM (6)'), alt: 'Alberca residencial con escalones' },
+  { src: photo('3.38.37 PM'), alt: 'Alberca residencial con muro gris' },
+  { src: photo('3.38.40 PM (5)'), alt: 'Alberca azul recién terminada' },
+  { src: photo('3.38.38 PM'), alt: 'Alberca en un jardín con pasto' },
+  { src: photo('3.38.40 PM (3)'), alt: 'Alberca con borde infinito y mosaico azul' },
+];
+
+const rehabilitacion = [
+  { src: photo('3.38.46 PM (1)'), alt: 'Jacuzzi exterior en un conjunto residencial' },
+  { src: photo('3.38.45 PM (4)'), alt: 'Alberca en el jardín de una casa' },
+  { src: photo('3.38.47 PM (1)'), alt: 'Jacuzzi interior' },
+  { src: photo('3.38.45 PM (2)'), alt: 'Alberca techada con mosaico a rayas' },
+  { src: photo('3.38.44 PM (4)'), alt: 'Alberca techada con mosaico azul' },
+  { src: photo('3.38.46 PM (2)'), alt: 'Jacuzzi exterior con camastros' },
+];
+
+// Collage decorativo. El mockup usa fotos de spa de banco de imágenes; aquí van fotos propias.
+// TODO imagen: cambiar por las 4 fotos definitivas del collage si la clienta manda otras.
+const collage = [
+  { src: photo('3.38.39 PM'), class: 'bottom-[20%] left-[4%] z-0 aspect-[3/4] w-[23%]' },
+  { src: photo('3.38.40 PM (3)'), class: 'top-0 left-[19%] z-10 aspect-[4/3] w-[34%] -rotate-3' },
+  { src: photo('3.38.46 PM (5)'), class: 'top-[16%] left-[46%] z-20 aspect-[4/5] w-[25%] rotate-2' },
+  { src: photo('3.38.44 PM (2)'), class: 'top-[6%] right-0 z-10 aspect-[4/3] w-[32%] -rotate-2' },
+];
+
+const tabClass =
+  'border-b-2 border-transparent pb-2 font-display italic transition aria-selected:border-accent aria-selected:text-navy';
+---
+
+<section id="proyectos" class="bg-white py-14 sm:py-20">
+  <div class="mx-auto w-full max-w-7xl px-5 sm:px-8">
+    <div class="grid items-end gap-8 lg:grid-cols-2">
+      <div>
+        <p class="font-display text-sm tracking-wide uppercase italic" data-animate="fade-up">Proyectos</p>
+        <h2 class="mt-3 text-2xl font-semibold text-brand sm:text-3xl" data-animate="fade-up">El cuidado se nota</h2>
+        {/*
+          TODO slider antes/después: el copy pide además "Algunas albercas que hemos construido, renovado
+          y mantenido. Desliza para ver el antes y el después." El diseño no lleva ese texto, así que
+          se agrega cuando exista el slider.
+        */}
+
+        <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-navy/70" role="tablist" aria-label="Tipo de proyecto">
+          <button type="button" role="tab" id="tab-mantenimiento" aria-controls="panel-mantenimiento" aria-selected="true" class={tabClass}>
+            Mantenimiento
+          </button>
+          <button type="button" role="tab" id="tab-construccion" aria-controls="panel-construccion" aria-selected="false" tabindex="-1" class={tabClass}>
+            Construcción
+          </button>
+          <button type="button" role="tab" id="tab-rehabilitacion" aria-controls="panel-rehabilitacion" aria-selected="false" tabindex="-1" class={tabClass}>
+            Rehabilitación
+          </button>
+        </div>
+      </div>
+
+      {/* Collage decorativo: 4 fotos en posiciones e inclinaciones distintas sobre un texto en movimiento */}
+      <div class="relative hidden aspect-[2/1] md:block" aria-hidden="true">
+        <div class="absolute inset-x-0 bottom-0 overflow-hidden">
+          <p class="marquee font-display text-4xl whitespace-nowrap text-navy/15 italic">
+            <span class="pr-12">Tu proyecto, nuestro compromiso. Construimos · Cuidamos · Renovamos.</span>
+            <span class="pr-12">Tu proyecto, nuestro compromiso. Construimos · Cuidamos · Renovamos.</span>
+          </p>
+        </div>
+        <div class="absolute inset-0" data-animate="stagger">
+          {
+            collage.map((item) => (
+              <Image
+                src={item.src}
+                alt=""
+                widths={[240, 360, 480]}
+                sizes="(min-width: 1024px) 16vw, 30vw"
+                class:list={['absolute object-cover shadow-lg', item.class]}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10" data-animate="fade-up">
+      <div role="tabpanel" id="panel-mantenimiento" aria-labelledby="tab-mantenimiento" tabindex="0">
+        <ProjectGallery category="Mantenimiento" images={mantenimiento} />
+      </div>
+      <div role="tabpanel" id="panel-construccion" aria-labelledby="tab-construccion" tabindex="0" hidden>
+        <ProjectGallery category="Construcción" images={construccion} />
+      </div>
+      <div role="tabpanel" id="panel-rehabilitacion" aria-labelledby="tab-rehabilitacion" tabindex="0" hidden>
+        <ProjectGallery category="Rehabilitación" images={rehabilitacion} />
+      </div>
+    </div>
+
+    {/* Aviso de que las fotos se amplían: con ratón es doble clic; en táctil, un toque */}
+    <p class="mt-4 flex items-center gap-2 font-display text-sm text-navy/70 italic">
+      <Icon aria-hidden="true" name="lucide:maximize-2" class="size-4 shrink-0" />
+      <span class="pointer-coarse:hidden">Doble clic en una foto para verla en grande</span>
+      <span class="hidden pointer-coarse:inline">Toca una foto para verla en grande</span>
+    </p>
+
+    <p class="mt-8 text-center text-lg" data-animate="fade-up">
+      ¿Quieres un resultado así?{' '}
+      <a
+        href={whatsappUrl('Hola, vi sus proyectos y quiero cotizar uno parecido.')}
+        target="_blank"
+        rel="noopener"
+        class="font-semibold text-brand-dark hover:underline"
+      >
+        Cotiza tu proyecto <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" />
+      </a>
+    </p>
+  </div>
+
+  {/*
+    Visor de fotos en grande. Es un <dialog> nativo: el navegador se encarga de atrapar el foco,
+    cerrar con Esc y devolver el foco. Recorre las fotos del tab que esté abierto.
+  */}
+  <dialog
+    id="lightbox"
+    class="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-white backdrop:bg-navy/90"
+    aria-label="Foto del proyecto en grande"
+  >
+    <div class="flex h-full flex-col items-center justify-center gap-4 px-4 py-16 sm:px-20">
+      <img data-lightbox-image src="" alt="" class="max-h-full min-h-0 max-w-full rounded-sm object-contain" />
+      <p class="flex items-baseline gap-4 text-sm" aria-live="polite">
+        <span data-lightbox-counter class="font-display italic text-white/70"></span>
+        <span data-lightbox-caption></span>
+      </p>
+    </div>
+
+    <button
+      type="button"
+      data-lightbox-close
+      aria-label="Cerrar"
+      class="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-sm bg-white text-navy transition hover:bg-amber"
+    >
+      <Icon aria-hidden="true" name="lucide:x" class="size-5" />
+    </button>
+    <button
+      type="button"
+      data-lightbox-prev
+      aria-label="Foto anterior"
+      class="absolute top-1/2 left-2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm bg-white text-navy transition hover:bg-amber sm:left-4"
+    >
+      <Icon aria-hidden="true" name="lucide:chevron-left" class="size-5" />
+    </button>
+    <button
+      type="button"
+      data-lightbox-next
+      aria-label="Foto siguiente"
+      class="absolute top-1/2 right-2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-sm bg-white text-navy transition hover:bg-amber sm:right-4"
+    >
+      <Icon aria-hidden="true" name="lucide:chevron-right" class="size-5" />
+    </button>
+  </dialog>
+</section>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('#proyectos [role="tab"]')];
+
+  function select(tab: HTMLButtonElement) {
+    for (const t of tabs) {
+      const active = t === tab;
+      t.setAttribute('aria-selected', String(active));
+      t.tabIndex = active ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !active;
+    }
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+      next.focus();
+      select(next);
+    });
+  });
+
+  // Visor de fotos en grande
+  const lightbox = document.querySelector<HTMLDialogElement>('#lightbox')!;
+  const image = lightbox.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
+  const counter = lightbox.querySelector<HTMLElement>('[data-lightbox-counter]')!;
+  const caption = lightbox.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+  const photoButtons = [...document.querySelectorAll<HTMLButtonElement>('#proyectos [data-lightbox-src]')];
+
+  let photos: HTMLButtonElement[] = []; // las fotos del tab abierto
+  let current = 0;
+
+  function show(index: number) {
+    current = (index + photos.length) % photos.length;
+    const photo = photos[current];
+    image.src = photo.dataset.lightboxSrc!;
+    image.alt = photo.dataset.lightboxAlt!;
+    caption.textContent = photo.dataset.lightboxAlt!;
+    counter.textContent = `${current + 1} / ${photos.length}`;
+    // Adelanta la descarga de la siguiente para que avanzar no tenga espera
+    new Image().src = photos[(current + 1) % photos.length].dataset.lightboxSrc!;
+  }
+
+  function open(photo: HTMLButtonElement) {
+    photos = [...photo.closest('[role="tabpanel"]')!.querySelectorAll<HTMLButtonElement>('[data-lightbox-src]')];
+    show(photos.indexOf(photo));
+    lightbox.showModal();
+  }
+
+  for (const photo of photoButtons) {
+    // Con ratón se abre con doble clic
+    photo.addEventListener('dblclick', () => open(photo));
+    // Un solo "clic" abre solo si viene del teclado (Enter o Espacio) o de un toque
+    photo.addEventListener('click', (e) => {
+      const pointer = (e as PointerEvent).pointerType;
+      if (e.detail === 0 || pointer === 'touch' || pointer === 'pen') open(photo);
+    });
+  }
+
+  lightbox.querySelector('[data-lightbox-prev]')!.addEventListener('click', () => show(current - 1));
+  lightbox.querySelector('[data-lightbox-next]')!.addEventListener('click', () => show(current + 1));
+  lightbox.querySelector('[data-lightbox-close]')!.addEventListener('click', () => lightbox.close());
+
+  lightbox.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') show(current + 1);
+    if (e.key === 'ArrowLeft') show(current - 1);
+  });
+
+  // Deslizar con el dedo para cambiar de foto
+  let startX: number | null = null;
+  let swiped = false;
+  lightbox.addEventListener('pointerdown', (e) => {
+    startX = e.pointerType === 'touch' ? e.clientX : null;
+    swiped = false;
+  });
+  lightbox.addEventListener('pointerup', (e) => {
+    if (startX === null) return;
+    const distance = e.clientX - startX;
+    startX = null;
+    if (Math.abs(distance) < 40) return;
+    swiped = true;
+    show(current + (distance < 0 ? 1 : -1));
+  });
+
+  // Clic fuera de la foto y de los botones: cerrar
+  lightbox.addEventListener('click', (e) => {
+    if (swiped) return;
+    if (!(e.target as HTMLElement).closest('img, button')) lightbox.close();
+  });
+
+  // Al cerrar, el foco vuelve a la foto que se estaba viendo
+  lightbox.addEventListener('close', () => photos[current]?.focus({ preventScroll: true }));
+</script>

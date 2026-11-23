@@ -12,6 +12,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.4.13"
+    "@iconify-json/lucide": "^1.2.158",
+    "@iconify-json/simple-icons": "^1.2.103",
+    "@microsoft/clarity": "^1.0.2",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.13",
+    "astro-icon": "^1.2.0",
+    "motion": "^14.14.0",
+    "tailwindcss": "^4.3.5"
   }
 }

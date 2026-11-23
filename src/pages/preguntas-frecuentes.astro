@@ -1,0 +1,25 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Faq from '../components/home/Faq.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import CtaBanner from '../components/home/CtaBanner.astro';
+---
+
+<PageLayout
+  title="Preguntas frecuentes | ToolPool"
+  description="Respuestas a las dudas más comunes sobre mantenimiento, construcción, cotización y productos para albercas."
+>
+  <PageHero eyebrow="Preguntas frecuentes" title="Resolvemos tus dudas">
+    <p>Lo que más nos preguntan antes de cotizar o comprar.</p>
+  </PageHero>
+
+  {/* Las preguntas y respuestas viven en el componente Faq */}
+  <Faq hideHeading />
+
+  <ContactSection eyebrow="¿Más dudas?" title="¿No resolvimos tu duda?">
+    <p>Escríbenos tu pregunta y te respondemos por WhatsApp.</p>
+  </ContactSection>
+
+  <CtaBanner />
+</PageLayout>

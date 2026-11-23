@@ -1,0 +1,38 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import { Image } from 'astro:assets';
+import bannerImage from '../../assets/img/banner_cta.png';
+import { whatsappUrl } from '../../lib/whatsapp';
+---
+
+<section class="relative overflow-hidden bg-navy py-28 text-center text-white sm:py-36">
+  <Image
+    src={bannerImage}
+    alt="Alberca exterior con camastros junto a edificios"
+    widths={[640, 960, 1280, 1672]}
+    sizes="100vw"
+    quality={70}
+    class="absolute inset-0 h-full w-full object-cover"
+    data-animate="parallax"
+  />
+  <div class="absolute inset-0 bg-navy/40" aria-hidden="true"></div>
+  {/* Remate redondeado de la sección blanca anterior */}
+  <div class="absolute inset-x-0 top-0 h-12 rounded-b-[3rem] bg-white" aria-hidden="true"></div>
+
+  <Container class="relative" data-animate="fade-up">
+    <h2 class="text-2xl sm:text-3xl">
+      Cuéntanos de tu alberca,
+      <span class="mt-2 block text-4xl italic sm:text-6xl">nosotros nos encargamos</span>
+    </h2>
+    <p class="mx-auto mt-6 max-w-lg">
+      Proyecto nuevo, renovación o mantenimiento: escríbenos y te ayudamos a encontrar la mejor solución.
+    </p>
+    <div class="mt-10 flex flex-wrap justify-center gap-4">
+      <Button href={whatsappUrl('Hola ToolPool, quiero contarles sobre mi alberca.')}>
+        Escríbenos por WhatsApp
+      </Button>
+      <Button href="/productos" variant="outline">Ver productos</Button>
+    </div>
+  </Container>
+</section>

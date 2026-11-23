@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+import CookieBanner from '../components/layout/CookieBanner.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  // TODO SEO: con la zona de servicio confirmada (CDMX) conviene cerrar el title con "… de albercas en CDMX"
+  title = 'ToolPool · Construcción y mantenimiento de albercas',
+  description = 'Construimos, mantenemos y rehabilitamos albercas y jacuzzis para casas, condominios, hoteles y desarrolladoras. Cotiza por WhatsApp.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Íconos del sitio (archivos en public/). El manifiesto y el apple-touch-icon son los que se
+        usan al guardar el sitio en la pantalla de inicio de un teléfono. */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0b1f3a" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {/* Fuentes: Instrument Sans (Google Fonts) y Century Gothic (local, declarada en global.css) */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    {/* El título del hero usa Century Gothic regular: se precarga para que no parpadee */}
+    <link rel="preload" href="/fonts/century-gothic-regular.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <slot />
+
+    {/* Aviso de cookies: Microsoft Clarity se carga desde ahí, solo si la persona acepta */}
+    <CookieBanner />
+
+    <script>
+      // Animaciones: se cargan cuando el navegador está ocioso, para no competir con la carga inicial
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const load = () => import('../scripts/animations');
+        if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 2000 });
+        else setTimeout(load, 200);
+      }
+    </script>
+
+    <script>
+      // Registra en Clarity los clics hacia WhatsApp y Mercado Libre. window.clarity solo existe
+      // si la persona aceptó las cookies (ver CookieBanner.astro); si no, esto no hace nada.
+      document.addEventListener('click', (e) => {
+        const link = (e.target as Element).closest<HTMLAnchorElement>('a[href]');
+        if (!link) return;
+        const event = link.href.includes('wa.me')
+          ? 'clic_whatsapp'
+          : link.href.includes('mercadolibre')
+            ? 'clic_mercadolibre'
+            : null;
+        if (event) (window as any).clarity?.('event', event);
+      });
+    </script>
+  </body>
+</html>

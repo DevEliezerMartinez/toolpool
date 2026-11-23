@@ -1,0 +1,58 @@
+---
+/**
+ * Galería bento de un tab de proyectos: 1 imagen grande + 5 medianas.
+ * Recibe 6 fotos en ese orden; si no llegan, muestra cajas provisionales.
+ * Cada foto es un botón que abre el visor en grande (el <dialog> y su script están en Projects.astro).
+ */
+import { Image, getImage } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import ImagePlaceholder from '../ui/ImagePlaceholder.astro';
+
+interface Props {
+  category: string;
+  images?: { src: ImageMetadata; alt: string }[];
+}
+
+const { category, images = [] } = Astro.props;
+
+// Posición de cada foto en la cuadrícula
+const cells = ['col-span-2 row-span-2', '', '', 'col-span-2', 'col-span-2', 'col-span-2'];
+
+// Versión grande para el visor: solo se descarga cuando se abre la foto
+const large = await Promise.all(
+  images.map((image) => getImage({ src: image.src, width: Math.min(1600, image.src.width), format: 'webp' })),
+);
+---
+
+<div class="grid auto-rows-[11rem] grid-cols-2 gap-2 lg:auto-rows-[13rem] lg:grid-cols-6">
+  {
+    cells.map((cell, i) =>
+      images[i] ? (
+        <button
+          type="button"
+          class:list={['group relative cursor-zoom-in overflow-hidden rounded-md', cell]}
+          data-lightbox-src={large[i].src}
+          data-lightbox-alt={images[i].alt}
+          aria-label={`Ver en grande: ${images[i].alt}`}
+        >
+          <Image
+            src={images[i].src}
+            alt={images[i].alt}
+            widths={[320, 480, 640, 960]}
+            sizes={i === 0 ? '(min-width: 1024px) 33vw, 100vw' : '(min-width: 1024px) 33vw, 50vw'}
+            class="h-full w-full object-cover"
+          />
+          {/* Señal de que la foto se amplía: fija en táctil; con ratón, al pasar el cursor o enfocar */}
+          <span
+            class="absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-sm bg-navy text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 pointer-coarse:opacity-100"
+            aria-hidden="true"
+          >
+            <Icon name="lucide:maximize-2" class="size-4" />
+          </span>
+        </button>
+      ) : (
+        <ImagePlaceholder label={`${category} ${i + 1}`} class:list={['rounded-md', cell]} />
+      ),
+    )
+  }
+</div>

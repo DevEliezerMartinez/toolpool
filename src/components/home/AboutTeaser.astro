@@ -1,0 +1,19 @@
+---
+import { Icon } from 'astro-icon/components';
+/** Nosotros en dos líneas para la home; la historia completa vive en /nosotros. */
+import Container from '../ui/Container.astro';
+---
+
+<section class="bg-sky-soft py-14 sm:py-16">
+  <Container class="max-w-3xl text-center" data-animate="fade-up">
+    <p class="text-sm tracking-wide font-display uppercase italic">Nosotros</p>
+    <h2 class="mt-3 text-2xl font-semibold text-brand sm:text-3xl">Somos ToolPool</h2>
+    <p class="mt-4 text-navy/80">
+      ToolPool nació con una idea sencilla: que cada alberca funcione de forma óptima, segura y eficiente, y que sus
+      dueños solo se ocupen de disfrutarla.
+    </p>
+    <a href="/nosotros" class="mt-5 inline-block text-sm font-semibold text-brand-dark hover:underline"
+      >Conoce a ToolPool <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+    >
+  </Container>
+</section>

@@ -1,0 +1,32 @@
+---
+interface Props {
+  eyebrow?: string;
+  /** Muestra la línea decorativa junto al eyebrow */
+  line?: boolean;
+  align?: 'left' | 'center';
+  class?: string;
+}
+
+const { eyebrow, line = false, align = 'left', class: className } = Astro.props;
+const centered = align === 'center';
+---
+
+<div class:list={[centered && 'text-center', className]} data-animate="fade-up">
+  {
+    eyebrow && (
+      <p
+        class:list={[
+          'mb-4 flex items-center gap-4 text-sm tracking-wide text-navy font-display uppercase italic',
+          centered && 'justify-center',
+        ]}
+      >
+        {line && <span class="h-px w-14 bg-navy" aria-hidden="true" />}
+        {eyebrow}
+        {line && centered && <span class="h-px w-14 bg-navy" aria-hidden="true" />}
+      </p>
+    )
+  }
+  <h2 class="text-2xl font-semibold text-balance text-brand sm:text-3xl">
+    <slot />
+  </h2>
+</div>

@@ -1,0 +1,194 @@
+---
+/**
+ * Aviso de privacidad integral (México, LFPDPPP).
+ *
+ * BORRADOR: falta que la clienta complete los datos de abajo. Todo lo que empieza con "[" se
+ * muestra resaltado en la página y activa el aviso de "borrador" al inicio. Al llenar los datos,
+ * el resaltado y el aviso desaparecen solos.
+ *
+ * Antes de publicar, que lo revise el asesor legal de la clienta. Puntos a confirmar:
+ * - Plazos de respuesta a solicitudes ARCO (aquí: 20 días hábiles + 15 para hacerla efectiva).
+ * - Nombre de la autoridad: la ley publicada en 2025 pasó las funciones del INAI a la
+ *   Secretaría Anticorrupción y Buen Gobierno.
+ * - Cookies: Microsoft Clarity solo se carga si la persona acepta en el aviso de cookies
+ *   (src/components/layout/CookieBanner.astro). Si el sitio se publica sin Clarity
+ *   (PUBLIC_CLARITY_ID vacío), quitar sus párrafos en "Cookies y tecnologías de seguimiento".
+ */
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Container from '../components/ui/Container.astro';
+
+// ── Datos que debe completar la clienta ──────────────────────────────────────────────────────
+const responsable = '[NOMBRE COMPLETO O RAZÓN SOCIAL DEL RESPONSABLE]';
+const domicilio = '[DOMICILIO: CALLE, NÚMERO, COLONIA, MUNICIPIO, ESTADO, C.P.]';
+const correo = 'gerencia@toolpool.mx';
+const fecha = '[FECHA DE PUBLICACIÓN]';
+// ¿Se usarán los datos para enviar promociones o novedades? true = sí, false = no, null = sin decidir
+const usaPromociones = null as boolean | null;
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+
+const pending = (value: string) => value.startsWith('[');
+const isDraft = [responsable, domicilio, fecha].some(pending) || usaPromociones === null;
+
+const markClass = 'bg-amber/40 px-1 font-medium text-navy';
+const h2Class = 'mt-10 text-xl font-semibold text-brand first:mt-0';
+const listClass = 'mt-3 list-disc space-y-1.5 pl-5';
+const linkClass = 'underline hover:text-navy';
+---
+
+<PageLayout
+  title="Aviso de privacidad | ToolPool"
+  description="Cómo ToolPool recaba, usa y protege tus datos personales, y cómo ejercer tus derechos."
+>
+  <PageHero eyebrow="Legal" title="Aviso de privacidad">
+    <p>Qué datos te pedimos, para qué los usamos y cómo puedes decidir sobre ellos.</p>
+  </PageHero>
+
+  <section class="bg-white py-14 sm:py-20">
+    <Container class="max-w-3xl text-navy/80">
+      {
+        isDraft && (
+          <p class="mb-10 border-l-4 border-amber bg-amber/15 p-4 text-sm text-navy" role="note">
+            <strong>Borrador pendiente de completar.</strong> Los textos resaltados son datos que aún faltan. Este
+            aviso no debe publicarse hasta llenarlos y revisarlo con un asesor legal.
+          </p>
+        )
+      }
+
+      <h2 class={h2Class}>Quién es responsable de tus datos</h2>
+      <p class="mt-3">
+        <span class:list={[pending(responsable) && markClass]}>{responsable}</span>, que opera bajo el nombre
+        comercial ToolPool, con domicilio en <span class:list={[pending(domicilio) && markClass]}>{domicilio}</span>,
+        es responsable del uso y la protección de tus datos personales.
+      </p>
+
+      <h2 class={h2Class}>Qué datos recabamos</h2>
+      <p class="mt-3">Cuando llenas el formulario de contacto de este sitio te pedimos:</p>
+      <ul class={listClass}>
+        <li>Tu nombre.</li>
+        <li>Tu número de WhatsApp.</li>
+        <li>El servicio o producto que te interesa.</li>
+        <li>El mensaje que quieras escribirnos (opcional).</li>
+      </ul>
+      <p class="mt-3">
+        También registramos la fecha y hora del envío y la página desde la que lo hiciste. Si nos escribes por
+        WhatsApp, recibimos tu número y lo que nos compartas en la conversación.
+      </p>
+      <p class="mt-3">
+        No pedimos datos personales sensibles ni datos financieros. Te pedimos no incluirlos en tu mensaje.
+      </p>
+
+      <h2 class={h2Class}>Para qué usamos tus datos</h2>
+      <p class="mt-3">Finalidades necesarias para atenderte:</p>
+      <ul class={listClass}>
+        <li>Contactarte para responder tu solicitud.</li>
+        <li>Preparar y enviarte cotizaciones.</li>
+        <li>Agendar visitas y dar seguimiento a los servicios que contrates.</li>
+        <li>Orientarte sobre los productos que recomendamos.</li>
+      </ul>
+      {
+        usaPromociones === true && (
+          <p class="mt-3">
+            Finalidad adicional, que no es necesaria para atenderte: enviarte promociones y novedades de ToolPool.
+            Si no quieres que usemos tus datos para esto, escríbenos a{' '}
+            <a href={`mailto:${correo}`} class={linkClass}>{correo}</a>; negarte no afecta la atención que
+            recibes.
+          </p>
+        )
+      }
+      {usaPromociones === false && <p class="mt-3">No usamos tus datos para publicidad ni para ninguna otra finalidad.</p>}
+      {
+        usaPromociones === null && (
+          <p class="mt-3">
+            <span class={markClass}>
+              [POR CONFIRMAR: SI LOS DATOS SE USARÁN PARA ENVIAR PROMOCIONES O NOVEDADES]
+            </span>
+          </p>
+        )
+      }
+
+      <h2 class={h2Class}>Con quién compartimos tus datos</h2>
+      <p class="mt-3">
+        No vendemos ni rentamos tus datos, y no los transferimos a terceros para sus propios fines. Para operar
+        usamos proveedores que tratan los datos por nuestra cuenta y siguiendo nuestras instrucciones:
+      </p>
+      <ul class={listClass}>
+        <li>Google, donde se guardan los envíos del formulario (Hojas de cálculo de Google).</li>
+        <li>WhatsApp (Meta), cuando la conversación continúa por ese medio.</li>
+      </ul>
+      <p class="mt-3">
+        Estos proveedores pueden almacenar la información en servidores fuera de México. Solo compartiremos tus datos
+        con una autoridad cuando la ley nos obligue a hacerlo.
+      </p>
+      <p class="mt-3">
+        Las compras de productos se realizan en Mercado Libre. Los datos que proporciones ahí se rigen por el aviso
+        de privacidad de Mercado Libre, no por este.
+      </p>
+
+      <h2 class={h2Class}>Tus derechos: acceso, rectificación, cancelación y oposición</h2>
+      <p class="mt-3">
+        Puedes conocer qué datos tuyos tenemos y cómo los usamos (acceso), pedir que los corrijamos (rectificación),
+        que los eliminemos (cancelación) u oponerte a que los usemos para fines específicos (oposición). También
+        puedes revocar el consentimiento que nos diste o pedir que limitemos el uso o la divulgación de tus datos.
+      </p>
+      <p class="mt-3">
+        Para ejercer cualquiera de estos derechos, escribe a{' '}
+        <a href={`mailto:${correo}`} class={linkClass}>{correo}</a> e incluye:
+      </p>
+      <ul class={listClass}>
+        <li>Tu nombre y un medio para comunicarte la respuesta.</li>
+        <li>Un documento que acredite tu identidad o, en su caso, la de tu representante.</li>
+        <li>Una descripción clara de los datos y del derecho que quieres ejercer.</li>
+        <li>Cualquier dato que nos ayude a localizar tu información, como el folio de tu solicitud.</li>
+      </ul>
+      <p class="mt-3">
+        Te responderemos en un máximo de 20 días hábiles a partir de que recibamos tu solicitud. Si procede, la
+        haremos efectiva dentro de los 15 días hábiles siguientes. El trámite no tiene costo.
+      </p>
+      <p class="mt-3">
+        Si consideras que tu derecho a la protección de datos no fue respetado, puedes acudir a la Secretaría
+        Anticorrupción y Buen Gobierno, que es la autoridad en la materia.
+      </p>
+
+      <h2 class={h2Class}>Cuánto tiempo conservamos tus datos</h2>
+      <p class="mt-3">
+        Conservamos tus datos mientras dure la atención de tu solicitud o la relación de servicio, y después solo
+        durante el tiempo que exijan las obligaciones legales aplicables. Pasado ese periodo los eliminamos.
+      </p>
+
+      <h2 class={h2Class}>Cookies y tecnologías de seguimiento</h2>
+      <p class="mt-3">
+        Este sitio usa Microsoft Clarity para entender cómo se navega y mejorarlo, pero solo si lo aceptas en el
+        aviso de cookies que aparece al entrar. Si lo rechazas, Clarity no se carga. Cuando está activo, utiliza
+        cookies y registra información de uso, como las páginas visitadas, los clics, el tipo de dispositivo y una
+        ubicación aproximada. No lo usamos para identificarte, y lo que escribes en el formulario no forma parte de
+        ese registro.
+      </p>
+      <p class="mt-3">
+        Puedes cambiar tu decisión cuando quieras:{' '}
+        <button type="button" class:list={[linkClass, 'cursor-pointer']} data-cookie-settings>
+          cambiar mi elección de cookies
+        </button>
+        . También puedes bloquear o borrar las cookies desde la configuración de tu navegador; el sitio seguirá
+        funcionando.
+      </p>
+      <p class="mt-3">
+        Las tipografías se cargan desde Google Fonts, por lo que tu navegador se conecta a servidores de
+        Google al abrir el sitio.
+      </p>
+
+      <h2 class={h2Class}>Cambios a este aviso</h2>
+      <p class="mt-3">
+        Podemos actualizar este aviso por cambios en la ley o en nuestros servicios. La versión vigente siempre
+        estará publicada en esta página.
+      </p>
+      <p class="mt-6 text-sm">
+        Última actualización: <span class:list={[pending(fecha) && markClass]}>{fecha}</span>.
+      </p>
+
+      <p class="mt-10 text-sm">
+        ¿Tienes dudas sobre este aviso? <a href="/contacto" class={linkClass}>Contáctanos</a>.
+      </p>
+    </Container>
+  </section>
+</PageLayout>

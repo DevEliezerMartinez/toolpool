@@ -1,0 +1,25 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import { whatsappUrl, PHONE_DISPLAY } from '../lib/whatsapp';
+---
+
+<PageLayout
+  title="Contacto | ToolPool"
+  description="Cuéntanos de tu alberca: déjanos tus datos o escríbenos por WhatsApp y te ayudamos a encontrar la mejor solución."
+>
+  <PageHero eyebrow="Contacto" title="Cuéntanos de tu alberca, nosotros nos encargamos">
+    <p>Proyecto nuevo, renovación o mantenimiento: escríbenos y te ayudamos a encontrar la mejor solución.</p>
+  </PageHero>
+
+  <ContactSection eyebrow="Escríbenos" title="Déjanos tus datos y te contactamos">
+    <p>Cuéntanos qué necesita tu alberca o jacuzzi y te respondemos por WhatsApp.</p>
+    <p>
+      ¿Prefieres escribirnos directo?{' '}
+      <a href={whatsappUrl('Hola, tengo una pregunta.')} target="_blank" rel="noopener">WhatsApp {PHONE_DISPLAY}</a>
+    </p>
+    {/* TODO: correo real y horario de atención */}
+    <p class="text-sm">Zona de servicio: CDMX</p>
+  </ContactSection>
+</PageLayout>

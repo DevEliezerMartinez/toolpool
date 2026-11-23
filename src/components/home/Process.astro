@@ -1,0 +1,95 @@
+---
+/**
+ * "Cómo trabajamos": 4 pasos conectados a una regla graduada.
+ * - Desktop: tarjetas en fila; cada una aparece, baja su conector y enciende su punto
+ *   cuando la regla llega a ella (todo ligado al scroll, ver src/scripts/animations.ts).
+ * - Móvil y tablet: línea de tiempo vertical que se va llenando con el scroll.
+ */
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { waterTexture } from '../../lib/gallery';
+
+// Agua que se ve dentro de los números (.water-text en global.css)
+const water = waterTexture();
+
+const stepClass = 'relative flex flex-col pl-10 lg:pl-0';
+const cardClass = 'flex-1 rounded-sm border border-navy/15 bg-white p-6';
+const numberClass = 'block font-display text-8xl leading-none font-bold tracking-tight text-brand italic water-text';
+// Marca corta bajo el número, como una graduación de la regla
+const tickClass = 'mt-4 block h-[3px] w-8 bg-amber';
+const dotClass = 'h-6 w-6 rounded-full border-[5px] border-navy bg-amber';
+---
+
+<section class="bg-sky-soft py-14 sm:py-20">
+  <Container>
+    <SectionHeading eyebrow="Cómo trabajamos" line align="center">
+      De tu idea a tu alberca, <em>paso a paso</em>
+    </SectionHeading>
+
+    {/* data-process-track marca el tramo de scroll que mueve la animación */}
+    <div class="mt-12" data-process-track>
+      <ol class="relative grid gap-6 lg:grid-cols-4 lg:gap-5" style={`--water: ${water}`}>
+        {/* Línea vertical de la versión móvil: fondo tenue + relleno que avanza con el scroll */}
+        <li class="absolute top-0 bottom-0 left-[11px] w-0.5 bg-brand/20 lg:hidden" aria-hidden="true">
+          <span class="block h-full w-full origin-top bg-brand" data-animate="ruler-line"></span>
+        </li>
+
+        <li class={stepClass}>
+          <span class:list={[dotClass, 'absolute top-7 left-0 lg:hidden']} aria-hidden="true"></span>
+          <div class={cardClass} data-animate="ruler-card">
+            <span class={numberClass}>01</span>
+            <span class={tickClass} aria-hidden="true"></span>
+            <h3 class="mt-4 text-lg font-semibold">Escuchamos</h3>
+            <p class="mt-2 text-sm text-navy/80">Nos cuentas qué necesitas y conocemos tu espacio.</p>
+          </div>
+          <span class="ml-[35px] hidden h-14 w-0.5 origin-top bg-navy lg:block" aria-hidden="true" data-animate="ruler-connector"></span>
+          <span class:list={[dotClass, 'relative z-10 -mb-3 ml-6 hidden lg:block']} aria-hidden="true" data-animate="ruler-dot"></span>
+        </li>
+
+        <li class={stepClass}>
+          <span class:list={[dotClass, 'absolute top-7 left-0 lg:hidden']} aria-hidden="true"></span>
+          <div class={cardClass} data-animate="ruler-card">
+            <span class={numberClass}>02</span>
+            <span class={tickClass} aria-hidden="true"></span>
+            <h3 class="mt-4 text-lg font-semibold">Diseñamos</h3>
+            <p class="mt-2 text-sm text-navy/80">Te presentamos una propuesta y un presupuesto claro, sin sorpresas.</p>
+          </div>
+          <span class="ml-[35px] hidden h-14 w-0.5 origin-top bg-navy lg:block" aria-hidden="true" data-animate="ruler-connector"></span>
+          <span class:list={[dotClass, 'relative z-10 -mb-3 ml-6 hidden lg:block']} aria-hidden="true" data-animate="ruler-dot"></span>
+        </li>
+
+        <li class={stepClass}>
+          <span class:list={[dotClass, 'absolute top-7 left-0 lg:hidden']} aria-hidden="true"></span>
+          <div class={cardClass} data-animate="ruler-card">
+            <span class={numberClass}>03</span>
+            <span class={tickClass} aria-hidden="true"></span>
+            <h3 class="mt-4 text-lg font-semibold">Construimos</h3>
+            <p class="mt-2 text-sm text-navy/80">Ejecutamos cada etapa a detalle, con materiales de calidad.</p>
+          </div>
+          <span class="ml-[35px] hidden h-14 w-0.5 origin-top bg-navy lg:block" aria-hidden="true" data-animate="ruler-connector"></span>
+          <span class:list={[dotClass, 'relative z-10 -mb-3 ml-6 hidden lg:block']} aria-hidden="true" data-animate="ruler-dot"></span>
+        </li>
+
+        <li class={stepClass}>
+          <span class:list={[dotClass, 'absolute top-7 left-0 lg:hidden']} aria-hidden="true"></span>
+          <div class={cardClass} data-animate="ruler-card">
+            <span class={numberClass}>04</span>
+            <span class={tickClass} aria-hidden="true"></span>
+            <h3 class="mt-4 text-lg font-semibold">Te acompañamos</h3>
+            <p class="mt-2 text-sm text-navy/80">
+              Instalamos, entregamos y seguimos cuidando tu alberca con mantenimiento.
+            </p>
+          </div>
+          <span class="ml-[35px] hidden h-14 w-0.5 origin-top bg-navy lg:block" aria-hidden="true" data-animate="ruler-connector"></span>
+          <span class:list={[dotClass, 'relative z-10 -mb-3 ml-6 hidden lg:block']} aria-hidden="true" data-animate="ruler-dot"></span>
+        </li>
+      </ol>
+
+      <div class="ruler hidden h-12 lg:block" aria-hidden="true" data-animate="ruler"></div>
+    </div>
+
+    <p class="mt-12 font-display text-xl italic sm:text-2xl" data-animate="fade-up">
+      Nuestro trabajo <span class="text-brand">no termina en la entrega.</span>
+    </p>
+  </Container>
+</section>

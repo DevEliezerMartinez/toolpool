@@ -1,0 +1,234 @@
+---
+import { Icon } from 'astro-icon/components';
+/**
+ * Preguntas frecuentes (acordeón). El copy vive aquí una sola vez; las páginas solo colocan <Faq />.
+ * - Sin props: todas las preguntas, agrupadas (página /preguntas-frecuentes).
+ * - featured="home" | "servicios": solo las preguntas destacadas de esa página, sin subtítulos
+ *   de grupo y con enlace a la página completa. La selección está en FEATURED, aquí abajo.
+ * - groups: limita a algunos grupos, p. ej. <Faq groups={['cotizacion']} />
+ * - hideHeading: oculta eyebrow y título cuando la página ya los pone.
+ *
+ * Hay 3 preguntas comentadas y 3 datos marcados con TODO: dependen de información
+ * que falta pedir a la clienta (frecuencias, tiempos de obra, costo de visita, factura, garantía).
+ */
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import FaqItem from '../ui/FaqItem.astro';
+import { whatsappUrl, MERCADO_LIBRE_URL } from '../../lib/whatsapp';
+
+type Group = 'servicio' | 'construccion' | 'cotizacion' | 'productos';
+type Page = 'home' | 'servicios';
+
+interface Props {
+  groups?: Group[];
+  featured?: Page;
+  hideHeading?: boolean;
+}
+
+const { groups, featured, hideHeading = false } = Astro.props;
+
+// TODO: sustituir por las preguntas que de verdad llegan más por WhatsApp (pedir a la clienta)
+const FEATURED: Record<Page, string[]> = {
+  home: ['zonas', 'costo', 'frecuencia'],
+  servicios: ['zonas', 'negocios', 'jacuzzis', 'senales', 'frecuencia'],
+};
+
+const IDS: Record<Group, string[]> = {
+  servicio: ['zonas', 'negocios', 'jacuzzis', 'senales', 'frecuencia', 'renovar', 'ahorro'],
+  construccion: ['proceso', 'tiempo'],
+  cotizacion: ['costo'],
+  productos: ['comprar', 'elegir'],
+};
+
+const item = (id: string) => !featured || FEATURED[featured].includes(id);
+const group = (g: Group) => (!groups || groups.includes(g)) && IDS[g].some(item);
+
+const groupClass = featured ? '' : 'mb-10 break-inside-avoid';
+const titleClass = featured ? 'sr-only' : 'text-lg font-semibold text-brand';
+const listClass = featured ? '' : 'mt-3 border-t border-slate-200';
+---
+
+<section id="preguntas-frecuentes" class="bg-white py-14 sm:py-20">
+  <Container class={featured ? 'max-w-3xl' : undefined}>
+    {
+      !hideHeading && (
+        <SectionHeading eyebrow="Preguntas frecuentes" line class="mb-10">
+          Resolvemos tus dudas
+        </SectionHeading>
+      )
+    }
+
+    <div class={featured ? 'border-t border-slate-200' : 'gap-x-14 lg:columns-2'} data-animate="fade-up">
+      {
+        group('servicio') && (
+          <div class={groupClass}>
+            <h3 class={titleClass}>Servicio</h3>
+            <div class={listClass}>
+              {item('zonas') && (
+                <FaqItem name="faq-servicio" question="¿En qué zonas dan servicio?">
+                  {/* TODO: confirmar si también cubren el área metropolitana */}
+                  <p>
+                    Damos servicio en la Ciudad de México. Si tu alberca está en otra zona,{' '}
+                    <a
+                      href={whatsappUrl('Hola, quiero saber si dan servicio en mi zona.')}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      escríbenos
+                    </a>{' '}
+                    y te decimos si podemos atenderte.
+                  </p>
+                </FaqItem>
+              )}
+              {item('negocios') && (
+                <FaqItem name="faq-servicio" question="¿Trabajan solo con casas o también con negocios?">
+                  <p>
+                    Con ambos. Atendemos casas y condominios, hoteles y resorts, clubes deportivos, constructoras y
+                    desarrolladoras.
+                  </p>
+                </FaqItem>
+              )}
+              {item('jacuzzis') && (
+                <FaqItem name="faq-servicio" question="¿También dan servicio a jacuzzis?">
+                  <p>Sí. Construimos, damos mantenimiento y rehabilitamos albercas y jacuzzis.</p>
+                </FaqItem>
+              )}
+              {item('senales') && (
+                <FaqItem name="faq-servicio" question="¿Cómo sé si mi alberca necesita mantenimiento?">
+                  <p>
+                    Hay tres señales comunes: agua turbia o sucia, equipos con residuos y hojas acumuladas. Si notas
+                    alguna, conviene revisarla antes de que el problema crezca.
+                  </p>
+                </FaqItem>
+              )}
+              {item('frecuencia') && (
+                <FaqItem name="faq-servicio" question="¿Cada cuánto debo dar mantenimiento a mi alberca?">
+                  {/* TODO: confirmar las frecuencias que manejan */}
+                  <p>
+                    Depende del uso, la ubicación y el tipo de alberca. Después de una revisión te proponemos la
+                    frecuencia adecuada para la tuya.
+                  </p>
+                </FaqItem>
+              )}
+              {item('renovar') && (
+                <FaqItem name="faq-servicio" question="¿Puedo renovar mi alberca sin construir una nueva?">
+                  <p>
+                    Sí. Con la rehabilitación renovamos albercas y jacuzzis deteriorados para que vuelvan a lucir y
+                    funcionar como nuevos.
+                  </p>
+                </FaqItem>
+              )}
+              {item('ahorro') && (
+                <FaqItem name="faq-servicio" question="¿Tienen opciones para ahorrar agua y energía?">
+                  <p>Sí. Recomendamos equipos y soluciones eficientes que optimizan el consumo de tu alberca.</p>
+                </FaqItem>
+              )}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        group('construccion') && (
+          <div class={groupClass}>
+            <h3 class={titleClass}>Construcción</h3>
+            <div class={listClass}>
+              {item('proceso') && (
+                <FaqItem name="faq-construccion" question="¿Cómo es el proceso para construir una alberca?">
+                  <p>
+                    Escuchamos tu idea, diseñamos una propuesta con presupuesto claro y construimos cada etapa a
+                    detalle. Al entregar, seguimos cuidando tu alberca con mantenimiento.
+                  </p>
+                </FaqItem>
+              )}
+              {item('tiempo') && (
+                <FaqItem name="faq-construccion" question="¿Cuánto tarda la construcción?">
+                  {/* TODO: confirmar el rango típico de tiempos */}
+                  <p>Depende del tamaño y del diseño; te damos un tiempo estimado al presentarte la propuesta.</p>
+                </FaqItem>
+              )}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        group('cotizacion') && (
+          <div class={groupClass}>
+            <h3 class={titleClass}>Cotización y pagos</h3>
+            <div class={listClass}>
+              {item('costo') && (
+                <FaqItem name="faq-cotizacion" question="¿Cuánto cuesta?">
+                  <p>
+                    Cada alberca es distinta, así que cotizamos según tu proyecto. Te explicamos qué incluye, por
+                    qué y cuánto cuesta, sin letras chiquitas.
+                  </p>
+                </FaqItem>
+              )}
+              {/*
+                TODO: activar estas 3 preguntas cuando la clienta confirme la respuesta
+                (y agregar su id a IDS.cotizacion). Son las que más frenan una compra.
+
+                <FaqItem name="faq-cotizacion" question="¿La visita o la cotización tienen costo?">
+                  <p>[confirmar]</p>
+                </FaqItem>
+                <FaqItem name="faq-cotizacion" question="¿Emiten factura?">
+                  <p>[confirmar]</p>
+                </FaqItem>
+                <FaqItem name="faq-cotizacion" question="¿Ofrecen garantía?">
+                  <p>[confirmar: qué cubre y por cuánto tiempo]</p>
+                </FaqItem>
+              */}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        group('productos') && (
+          <div class={groupClass}>
+            <h3 class={titleClass}>Productos</h3>
+            <div class={listClass}>
+              {item('comprar') && (
+                <FaqItem name="faq-productos" question="¿Cómo compro sus productos?">
+                  <p>
+                    Desde el botón{' '}
+                    <a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener">
+                      "Ver en Mercado Libre"
+                    </a>{' '}
+                    de cada producto. La compra se hace de forma segura en Mercado Libre.
+                  </p>
+                </FaqItem>
+              )}
+              {item('elegir') && (
+                <FaqItem name="faq-productos" question="¿Me ayudan a elegir el producto correcto?">
+                  <p>
+                    Sí.{' '}
+                    <a
+                      href={whatsappUrl('Hola, quiero asesoría sobre un producto para mi alberca.')}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      Pregúntanos por WhatsApp
+                    </a>{' '}
+                    y te recomendamos el adecuado para tu alberca.
+                  </p>
+                </FaqItem>
+              )}
+            </div>
+          </div>
+        )
+      }
+    </div>
+
+    {
+      featured && (
+        <p class="mt-8">
+          <a href="/preguntas-frecuentes" class="font-semibold text-brand-dark hover:underline">
+            Ver todas las preguntas frecuentes <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" />
+          </a>
+        </p>
+      )
+    }
+  </Container>
+</section>

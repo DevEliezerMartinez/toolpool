@@ -1,0 +1,42 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+---
+
+<section class="bg-white py-14 sm:py-16">
+  <Container>
+    <SectionHeading>Cuidamos albercas de todos los tamaños</SectionHeading>
+
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-animate="stagger">
+      <li class="flex items-center gap-4 rounded-md border border-slate-100 pr-4 shadow-sm">
+        <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-sky-soft text-navy">
+          <Icon aria-hidden="true" name="lucide:house" class="size-7" />
+        </span>
+        <span class="text-sm">Casas y condominios</span>
+      </li>
+
+      <li class="flex items-center gap-4 rounded-md border border-slate-100 pr-4 shadow-sm">
+        <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-sky-soft text-navy">
+          <Icon aria-hidden="true" name="lucide:hotel" class="size-7" />
+        </span>
+        <span class="text-sm">Hoteles y resorts</span>
+      </li>
+
+      <li class="flex items-center gap-4 rounded-md border border-slate-100 pr-4 shadow-sm">
+        <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-sky-soft text-navy">
+          <Icon aria-hidden="true" name="lucide:trophy" class="size-7" />
+        </span>
+        <span class="text-sm">Clubes deportivos</span>
+      </li>
+
+      <li class="flex items-center gap-4 rounded-md border border-slate-100 pr-4 shadow-sm">
+        <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-sky-soft text-navy">
+          <Icon aria-hidden="true" name="lucide:hard-hat" class="size-7" />
+        </span>
+        <span class="text-sm">Constructoras y desarrolladoras</span>
+      </li>
+    </ul>
+    <slot />
+  </Container>
+</section>

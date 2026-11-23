@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import SectionHeading from '../ui/SectionHeading.astro';
+import instalacion from '../../assets/img/conocemos_cada_instalacion.jpeg';
+import equipos from '../../assets/img/cada_equipo.jpeg';
+import presupuesto from '../../assets/img/presupuesto_honesto.jpeg';
+import unEquipo from '../../assets/img/un_solo_equipo.jpeg';
+import { photo } from '../../lib/gallery';
+
+// TODO imagen: foto provisional elegida de la galería para "Soluciones a tu medida" (no venía una con ese nombre)
+const aMedida = photo('3.38.40 PM (3)');
+
+// Desde 640 px las tarjetas se acomodan con flex-wrap: caben las que quepan por fila (5 en pantallas
+// anchas) y el resto baja centrado; cada una crece hasta 24rem para no deformarse si queda sola.
+// En móvil se apilan al hacer scroll: cada tarjeta es sticky y se detiene un poco más abajo que la
+// anterior (--i es su turno), así la siguiente la va cubriendo y queda asomando el borde de las previas.
+const cardClass = [
+  'group relative flex items-end overflow-hidden rounded-xl bg-navy text-white',
+  'max-sm:sticky max-sm:top-[calc(4.75rem+var(--i)*0.75rem)] max-sm:aspect-[4/5] max-sm:w-full max-sm:shadow-[0_-10px_24px_-8px_rgb(11_31_58/0.45)]',
+  'sm:aspect-[3/4] sm:max-w-sm sm:flex-1 sm:basis-56',
+].join(' ');
+const imageClass = 'absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105';
+const shadeClass = 'absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent';
+const widths = [320, 480, 640, 960];
+const sizes = "(min-width: 1280px) 20vw, (min-width: 640px) 50vw, 100vw";
+---
+
+<section class="bg-white py-14 sm:py-20">
+  {/* Esta sección usa menos margen lateral que el resto para que las tarjetas sean más anchas */}
+  <div class="mx-auto w-full max-w-[120rem] px-4 sm:px-6">
+    <SectionHeading eyebrow="Por qué ToolPool" line class="max-w-md">
+      Cuidamos tu alberca como si fuera nuestra
+    </SectionHeading>
+
+    <ul class="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-center" data-animate="stagger">
+      <li class={cardClass} style="--i: 0">
+        <Image src={instalacion} alt="Alberca residencial con deck de madera" widths={widths} sizes={sizes} class={imageClass} />
+        <div class={shadeClass} aria-hidden="true"></div>
+        <div class="relative p-5">
+          <h3 class="text-lg font-semibold italic lg:text-xl">Conocemos cada instalación</h3>
+          <p class="mt-2 text-sm text-white/90">
+            Una alberca de casa no se cuida igual que la de un hotel. Adaptamos cada servicio a tu espacio y a su
+            uso.
+          </p>
+        </div>
+      </li>
+
+      <li class={cardClass} style="--i: 1">
+        <Image src={equipos} alt="Cuarto de máquinas con filtros y bomba" widths={widths} sizes={sizes} class={imageClass} />
+        <div class={shadeClass} aria-hidden="true"></div>
+        <div class="relative p-5">
+          <h3 class="text-lg font-semibold italic lg:text-xl">Cuidamos tus equipos</h3>
+          <p class="mt-2 text-sm text-white/90">
+            Revisamos bombas, filtros y calderas para prevenir fallas y alargar su vida útil.
+          </p>
+        </div>
+      </li>
+
+      {/* Este motivo no aparece en el mockup (que muestra 4 tarjetas); viene del documento de copy */}
+      <li class={cardClass} style="--i: 2">
+        <Image src={aMedida} alt="Alberca con borde infinito y mosaico azul" widths={widths} sizes={sizes} class={imageClass} />
+        <div class={shadeClass} aria-hidden="true"></div>
+        <div class="relative p-5">
+          <h3 class="text-lg font-semibold italic lg:text-xl">Soluciones a tu medida</h3>
+          <p class="mt-2 text-sm text-white/90">
+            Nada de paquetes genéricos: proponemos lo que tu proyecto realmente necesita.
+          </p>
+        </div>
+      </li>
+
+      <li class={cardClass} style="--i: 3">
+        <Image src={presupuesto} alt="Alberca en el jardín de una casa" widths={widths} sizes={sizes} class={imageClass} />
+        <div class={shadeClass} aria-hidden="true"></div>
+        <div class="relative p-5">
+          <h3 class="text-lg font-semibold italic lg:text-xl">Presupuestos honestos</h3>
+          <p class="mt-2 text-sm text-white/90">
+            Te explicamos qué se hará, por qué y cuánto cuesta. Sin letras chiquitas.
+          </p>
+        </div>
+      </li>
+
+      <li class={cardClass} style="--i: 4">
+        <Image src={unEquipo} alt="Alberca iluminada de noche" widths={[320, 480, 618]} sizes={sizes} class={imageClass} />
+        <div class={shadeClass} aria-hidden="true"></div>
+        <div class="relative p-5">
+          <h3 class="text-lg font-semibold italic lg:text-xl">Un solo equipo para todo</h3>
+          <p class="mt-2 text-sm text-white/90">
+            Construcción, mantenimiento, equipos y tratamiento del agua con un mismo proveedor.
+          </p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

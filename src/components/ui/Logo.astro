@@ -1,0 +1,22 @@
+---
+/**
+ * Logo de ToolPool. El original (public/logo.png) mide más de 10 000 px;
+ * aquí se sirve una copia optimizada desde src/assets.
+ */
+import { Image } from 'astro:assets';
+import logo from '../../assets/img/logo.png';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = 'h-11' } = Astro.props;
+---
+
+<Image
+  src={logo}
+  alt="ToolPool"
+  width={320}
+  loading="eager"
+  class:list={['w-auto', className]}
+/>

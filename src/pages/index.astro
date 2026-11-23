@@ -1,16 +1,35 @@
 ---
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import ServicesSummary from '../components/home/ServicesSummary.astro';
+import Segments from '../components/home/Segments.astro';
+import WhyUs from '../components/home/WhyUs.astro';
+import Process from '../components/home/Process.astro';
+import Projects from '../components/home/Projects.astro';
+import Products from '../components/home/Products.astro';
+import AboutTeaser from '../components/home/AboutTeaser.astro';
+import Faq from '../components/home/Faq.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import CtaBanner from '../components/home/CtaBanner.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+{/*
+  La home presenta y reparte: hero, segmentos, "Por qué ToolPool" y CTA van completos;
+  lo demás son resúmenes que enlazan a su página principal.
+  El proceso ("Cómo trabajamos") se muestra aquí y también en /servicios; los valores viven en /nosotros.
+*/}
+<PageLayout headerVariant="overlay">
+  <Hero />
+  <ServicesSummary />
+  <Segments />
+  <WhyUs />
+  <Process />
+  <Projects />
+  <Products />
+  <AboutTeaser />
+  <Faq featured="home" />
+  <ContactSection title="Déjanos tus datos y te contactamos">
+    <p>Cuéntanos qué necesita tu alberca o jacuzzi y te respondemos por WhatsApp.</p>
+  </ContactSection>
+  <CtaBanner />
+</PageLayout>

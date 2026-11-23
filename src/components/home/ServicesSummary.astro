@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+/**
+ * Resumen de servicios para la home: nombre y frase de cada uno, con enlace a su bloque en /servicios.
+ * Las descripciones completas viven en la página de Servicios.
+ */
+import Container from '../ui/Container.astro';
+import { Image } from 'astro:assets';
+import edificio from '../../assets/img/edificio.png';
+import residencial from '../../assets/img/nosotros-pt2.jpeg';
+
+const rowClass = 'group flex items-center gap-5 py-5';
+const numberClass =
+  'flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-sky-soft text-xs font-semibold text-brand-dark';
+const arrowClass = 'ml-auto text-brand-dark transition group-hover:translate-x-1';
+---
+
+{/* Sube sobre el hero con las esquinas superiores redondeadas */}
+<section id="servicios" class="relative z-10 -mt-12 rounded-t-[3rem] bg-white py-16 sm:py-24">
+  <Container class="grid items-start gap-14 lg:grid-cols-2">
+    {/* Collage de 2 imágenes superpuestas */}
+    <div class="relative pr-10 pb-16 sm:pr-16 sm:pb-20" data-animate="stagger">
+      <Image
+        src={edificio}
+        alt="Alberca al pie de un edificio corporativo"
+        widths={[480, 687]}
+        sizes="(min-width: 1024px) 40vw, 85vw"
+        class="aspect-[4/5] w-full rounded-md object-cover"
+      />
+      <Image
+        src={residencial}
+        alt="Alberca residencial con deck de madera"
+        widths={[320, 480, 640]}
+        sizes="(min-width: 1024px) 22vw, 45vw"
+        class="absolute right-0 bottom-0 aspect-square w-1/2 rounded-md object-cover ring-4 ring-white"
+      />
+    </div>
+
+    <div>
+      <p class="text-sm tracking-wide font-display uppercase italic" data-animate="fade-up">Servicios</p>
+      <h2 class="mt-4 text-2xl font-bold text-balance text-brand sm:text-3xl" data-animate="fade-up">
+        Todo lo que tu alberca necesita, con un solo equipo
+      </h2>
+
+      <ol class="mt-8 divide-y divide-slate-200 border-y border-slate-200" data-animate="stagger">
+        <li>
+          <a href="/servicios#mantenimiento" class={rowClass}>
+            <span class={numberClass}>01</span>
+            <span>
+              <span class="block text-lg font-semibold">Mantenimiento</span>
+              <span class="block font-display italic">Agua cristalina, sin que tengas que pensar en ella.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+        <li>
+          <a href="/servicios#construccion" class={rowClass}>
+            <span class={numberClass}>02</span>
+            <span>
+              <span class="block text-lg font-semibold">Construcción</span>
+              <span class="block font-display italic">La alberca que imaginas, construida a detalle.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+        <li>
+          <a href="/servicios#rehabilitacion" class={rowClass}>
+            <span class={numberClass}>03</span>
+            <span>
+              <span class="block text-lg font-semibold">Rehabilitación</span>
+              <span class="block font-display italic">Devuélvele la vida a tu alberca.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+        <li>
+          <a href="/servicios#equipamiento" class={rowClass}>
+            <span class={numberClass}>04</span>
+            <span>
+              <span class="block text-lg font-semibold">Equipamiento y área de máquinas</span>
+              <span class="block font-display italic">El corazón de tu alberca, siempre a punto.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+        <li>
+          <a href="/servicios#tratamiento-del-agua" class={rowClass}>
+            <span class={numberClass}>05</span>
+            <span>
+              <span class="block text-lg font-semibold">Tratamiento del agua</span>
+              <span class="block font-display italic">Agua limpia, segura y en equilibrio.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+        <li>
+          <a href="/servicios#asesoria" class={rowClass}>
+            <span class={numberClass}>06</span>
+            <span>
+              <span class="block text-lg font-semibold">Asesoría especializada</span>
+              <span class="block font-display italic">Te decimos lo que tu alberca necesita, y lo que no.</span>
+            </span>
+            <span class={arrowClass} aria-hidden="true"><Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></span>
+          </a>
+        </li>
+      </ol>
+
+      <a href="/servicios" class="mt-6 inline-block text-sm font-semibold text-brand-dark hover:underline"
+        >Ver todos los servicios <Icon aria-hidden="true" name="lucide:arrow-right" class="inline-block size-[1em] align-[-0.125em]" /></a
+      >
+    </div>
+  </Container>
+</section>

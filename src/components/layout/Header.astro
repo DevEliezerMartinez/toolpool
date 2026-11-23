@@ -1,0 +1,98 @@
+---
+import { Icon } from 'astro-icon/components';
+/**
+ * Header fijo: acompaña todo el scroll.
+ * - overlay (home): transparente sobre el hero; al bajar pasa a navy sólido.
+ * - solid (páginas internas): navy desde el inicio; un espaciador reserva su altura.
+ * Al bajar gana sombra y se compacta. El estado lo marca un IntersectionObserver sobre un
+ * centinela al inicio de la página (sin listener de scroll) con el atributo data-scrolled.
+ */
+import Container from '../ui/Container.astro';
+import MobileMenu from './MobileMenu.astro';
+import Logo from '../ui/Logo.astro';
+import { whatsappUrl } from '../../lib/whatsapp';
+
+interface Props {
+  variant?: 'overlay' | 'solid';
+}
+
+const { variant = 'solid' } = Astro.props;
+
+// Página actual, para marcarla en el menú ("/servicios/" y "/servicios" cuentan igual)
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const linkClass = (href: string) => [
+  'border-b-2 py-1 transition hover:text-amber',
+  current === href ? 'border-amber text-amber' : 'border-transparent',
+];
+const ariaCurrent = (href: string) => (current === href ? 'page' : undefined);
+---
+
+{/* Centinela: mientras se ve, la página está arriba del todo */}
+<div class="pointer-events-none absolute top-0 left-0 h-6 w-px" aria-hidden="true" data-header-sentinel></div>
+
+<header
+  class:list={[
+    'group/header fixed inset-x-0 top-0 z-30 text-white transition-[background-color,box-shadow] duration-300 motion-reduce:transition-none',
+    'data-scrolled:bg-navy data-scrolled:shadow-lg data-menu-open:bg-navy',
+    variant === 'solid' && 'bg-navy',
+  ]}
+  data-header
+>
+  <Container
+    class="flex items-center justify-between py-5 transition-[padding] duration-300 group-data-scrolled/header:py-3 motion-reduce:transition-none"
+  >
+    <a href="/" aria-label="ToolPool, inicio">
+      <Logo
+        class="h-11 transition-[height] duration-300 group-data-scrolled/header:h-9 motion-reduce:transition-none"
+      />
+    </a>
+
+    {/* Los nombres del menú son los mismos que usan los botones y los títulos de cada página */}
+    <nav class="hidden items-center gap-8 text-sm lg:flex" aria-label="Principal">
+      <a href="/" class:list={linkClass('/')} aria-current={ariaCurrent('/')}>Inicio</a>
+      <a href="/servicios" class:list={linkClass('/servicios')} aria-current={ariaCurrent('/servicios')}>Servicios</a>
+      <a href="/productos" class:list={linkClass('/productos')} aria-current={ariaCurrent('/productos')}>Productos</a>
+      <a href="/nosotros" class:list={linkClass('/nosotros')} aria-current={ariaCurrent('/nosotros')}>Nosotros</a>
+      <a href="/preguntas-frecuentes" class:list={linkClass('/preguntas-frecuentes')} aria-current={ariaCurrent('/preguntas-frecuentes')}>Preguntas frecuentes</a>
+    </nav>
+
+    <a
+      href={whatsappUrl('Hola ToolPool, me gustaría cotizar un servicio para mi alberca.')}
+      target="_blank"
+      rel="noopener"
+      class="hidden bg-amber px-4 py-2 text-sm font-medium text-navy transition hover:brightness-95 lg:inline-block"
+    >
+      Cotiza por WhatsApp
+    </a>
+
+    <button
+      type="button"
+      class="inline-flex h-10 w-10 items-center justify-center border border-white/60 lg:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <Icon aria-hidden="true" name="lucide:menu" class="size-5" />
+    </button>
+  </Container>
+
+  <MobileMenu current={current} />
+
+  {/* Barra de progreso de lectura: avanza con el scroll de la página (CSS puro, ver global.css) */}
+  <div class="scroll-progress absolute bottom-0 left-0 h-0.5 w-full origin-left bg-amber" aria-hidden="true"></div>
+</header>
+
+{/* En páginas internas el header fijo no tapa el contenido: este bloque reserva su altura */}
+{variant === 'solid' && <div class="h-21" aria-hidden="true" />}
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const sentinel = document.querySelector('[data-header-sentinel]');
+
+  if (header && sentinel) {
+    new IntersectionObserver(([entry]) => {
+      header.toggleAttribute('data-scrolled', !entry.isIntersecting);
+    }).observe(sentinel);
+  }
+</script>

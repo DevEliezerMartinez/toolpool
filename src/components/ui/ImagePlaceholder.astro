@@ -1,0 +1,27 @@
+---
+/**
+ * Caja temporal mientras llegan las imágenes reales.
+ * Al sustituir: cambiar por <Image /> de astro:assets conservando las mismas clases.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  label: string;
+  tone?: 'light' | 'dark';
+}
+
+const { label, tone = 'light', class: className, ...rest } = Astro.props;
+---
+
+<div
+  role="img"
+  aria-label={label}
+  class:list={[
+    'flex items-center justify-center overflow-hidden p-3 text-center text-xs',
+    tone === 'dark' ? 'bg-slate-700 text-slate-400' : 'bg-slate-200 text-slate-500',
+    className,
+  ]}
+  {...rest}
+>
+  <span aria-hidden="true">{label}</span>
+</div>

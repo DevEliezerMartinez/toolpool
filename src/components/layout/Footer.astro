@@ -1,0 +1,78 @@
+---
+import { Icon } from 'astro-icon/components';
+import Container from '../ui/Container.astro';
+import Logo from '../ui/Logo.astro';
+import { whatsappUrl, PHONE_DISPLAY, MERCADO_LIBRE_URL } from '../../lib/whatsapp';
+---
+
+<footer class="bg-navy text-white">
+  <Container class="py-14">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
+      <div>
+        <a href="/" aria-label="ToolPool, inicio" class="inline-block"><Logo class="h-12" /></a>
+        <p class="mt-5 font-display text-2xl leading-tight italic">Tu proyecto, nuestro compromiso.</p>
+        <p class="mt-4 max-w-xs text-sm text-white/60">
+          Construcción, mantenimiento y rehabilitación de albercas y jacuzzis.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-widest text-brand uppercase">Servicios</h3>
+        <ul class="mt-4 space-y-2 text-sm text-white/80">
+          <li><a href="/servicios#mantenimiento" class="hover:text-white">Mantenimiento</a></li>
+          <li><a href="/servicios#construccion" class="hover:text-white">Construcción</a></li>
+          <li><a href="/servicios#rehabilitacion" class="hover:text-white">Rehabilitación</a></li>
+          <li><a href="/servicios#equipamiento" class="hover:text-white">Equipamiento</a></li>
+          <li><a href="/servicios#tratamiento-del-agua" class="hover:text-white">Tratamiento del agua</a></li>
+          <li><a href="/servicios#asesoria" class="hover:text-white">Asesoría</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-widest text-brand uppercase">Productos</h3>
+        <ul class="mt-4 space-y-2 text-sm text-white/80">
+          <li><a href="/productos" class="hover:text-white">Productos</a></li>
+          <li><a href={MERCADO_LIBRE_URL} target="_blank" rel="noopener" class="hover:text-white">Tienda en Mercado Libre <Icon aria-hidden="true" name="lucide:arrow-up-right" class="inline-block size-[1em] align-[-0.125em]" /></a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-widest text-brand uppercase">Nosotros</h3>
+        <ul class="mt-4 space-y-2 text-sm text-white/80">
+          <li><a href="/nosotros" class="hover:text-white">Somos ToolPool</a></li>
+          <li><a href="/servicios#proyectos" class="hover:text-white">Proyectos</a></li>
+          <li><a href="/preguntas-frecuentes" class="hover:text-white">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-semibold tracking-widest text-brand uppercase">Contacto</h3>
+        <ul class="mt-4 space-y-2 text-sm text-white/80">
+          <li>
+            <a href={whatsappUrl('Hola, tengo una pregunta.')} target="_blank" rel="noopener" class="hover:text-white"
+              >WhatsApp {PHONE_DISPLAY}</a
+            >
+          </li>
+          <li>contacto@toolpool.mx</li>
+          <li class="flex gap-4 pt-1">
+            <a
+              href="https://www.facebook.com/profile.php?id=61595525404876"
+              target="_blank"
+              rel="noopener"
+              class="hover:text-white" aria-label="Facebook"><Icon aria-hidden="true" name="simple-icons:facebook" class="size-5" /></a>
+            <a href="https://www.instagram.com/toolpoolmx/" target="_blank" rel="noopener" class="hover:text-white" aria-label="Instagram"><Icon aria-hidden="true" name="simple-icons:instagram" class="size-5" /></a>
+            <a href="https://www.tiktok.com/@toolpool.mx" target="_blank" rel="noopener" class="hover:text-white" aria-label="TikTok"><Icon aria-hidden="true" name="simple-icons:tiktok" class="size-5" /></a>
+          </li>
+          <li class="text-white/50">Zona de servicio: CDMX</li>
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:justify-between"
+    >
+      <p>© 2026 ToolPool. Todos los derechos reservados.</p>
+      <a href="/aviso-de-privacidad" class="hover:text-white">Aviso de privacidad</a>
+    </div>
+  </Container>
+</footer>

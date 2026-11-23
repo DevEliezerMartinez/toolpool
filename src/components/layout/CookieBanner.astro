@@ -1,0 +1,104 @@
+---
+/**
+ * Aviso de cookies: tarjeta pequeña fija abajo a la izquierda.
+ * Microsoft Clarity (analítica) NO se carga hasta que la persona acepta; si rechaza, no se
+ * descarga nada de Clarity ni se crean sus cookies.
+ *
+ * - La decisión se guarda en localStorage con la clave "toolpool-cookies".
+ * - Cualquier elemento con el atributo data-cookie-settings vuelve a abrir el aviso
+ *   (lo usa el aviso de privacidad para cambiar la elección).
+ * - Clarity solo arranca en producción y con PUBLIC_CLARITY_ID configurado (ver .env.example).
+ *   En desarrollo el aviso se muestra para poder probarlo, pero no carga Clarity.
+ * - En producción sin ID no hay cookies de analítica, así que el aviso no se incluye.
+ */
+const enabled = import.meta.env.DEV || Boolean(import.meta.env.PUBLIC_CLARITY_ID);
+
+const buttonClass = 'flex-1 rounded-sm border px-4 py-2 text-sm font-medium transition';
+---
+
+{
+  enabled && (
+    <div
+      role="region"
+      aria-label="Aviso de cookies"
+      class="fixed inset-x-3 bottom-3 z-50 rounded-sm border border-white/15 bg-navy p-4 text-white sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-sm"
+      data-cookie-banner
+      hidden
+    >
+      <p class="text-sm">
+        Usamos cookies de analítica (Microsoft Clarity) para mejorar el sitio. Consulta el{' '}
+        <a href="/aviso-de-privacidad" class="underline hover:text-amber">
+          aviso de privacidad
+        </a>
+        .
+      </p>
+      <div class="mt-3 flex gap-2">
+        <button type="button" class:list={[buttonClass, 'border-amber bg-amber text-navy hover:brightness-95']} data-cookie-accept>
+          Aceptar
+        </button>
+        <button type="button" class:list={[buttonClass, 'border-white/60 hover:border-white hover:bg-white/10']} data-cookie-reject>
+          Rechazar
+        </button>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const KEY = 'toolpool-cookies';
+  const CLARITY_ID = import.meta.env.PUBLIC_CLARITY_ID as string | undefined;
+
+  const banner = document.querySelector<HTMLElement>('[data-cookie-banner]');
+
+  // El almacenamiento puede estar bloqueado (modo privado, ajustes del navegador)
+  const read = () => {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  };
+  const save = (value: string) => {
+    try {
+      localStorage.setItem(KEY, value);
+    } catch {
+      // Sin almacenamiento, el aviso volverá a aparecer en la siguiente visita
+    }
+  };
+
+  let clarityStarted = false;
+  async function startClarity() {
+    if (clarityStarted || !import.meta.env.PROD || !CLARITY_ID) return;
+    clarityStarted = true;
+    // Import dinámico: quien no acepta nunca descarga este código
+    const { default: Clarity } = await import('@microsoft/clarity');
+    Clarity.init(CLARITY_ID);
+    Clarity.consent(true);
+  }
+
+  if (banner) {
+    const previous = read();
+    if (previous === 'aceptadas') startClarity();
+    else if (previous !== 'rechazadas') banner.hidden = false;
+
+    banner.querySelector('[data-cookie-accept]')!.addEventListener('click', () => {
+      save('aceptadas');
+      banner.hidden = true;
+      startClarity();
+    });
+
+    banner.querySelector('[data-cookie-reject]')!.addEventListener('click', () => {
+      save('rechazadas');
+      banner.hidden = true;
+      // Si Clarity ya estaba corriendo, recargar es la forma de detenerlo
+      if (clarityStarted) location.reload();
+    });
+
+    // Enlaces "Cambiar mi elección de cookies"
+    document.addEventListener('click', (e) => {
+      if (!(e.target as Element).closest('[data-cookie-settings]')) return;
+      banner.hidden = false;
+      banner.querySelector<HTMLElement>('[data-cookie-accept]')!.focus();
+    });
+  }
+</script>
